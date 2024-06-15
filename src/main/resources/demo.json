@@ -1,0 +1,122 @@
+{
+  "citizens": [
+    {
+      "familyName": "Addams",
+      "firstName": "Gomez",
+      "birthDay": "1970-03-30",
+      "gender": "MALE",
+      "citizenship": "USA"
+    },
+    {
+      "familyName": "Simpson",
+      "firstName": "Morticia",
+      "birthDay": "1973-04-28",
+      "gender": "FEMALE",
+      "citizenship": "USA"
+    },
+    {
+      "familyName": "Addams",
+      "firstName": "Wednesday",
+      "birthDay": "1995-02-16",
+      "gender": "FEMALE",
+      "citizenship": "USA"
+    },
+    {
+      "familyName": "Addams",
+      "firstName": "Pugsley",
+      "birthDay": "1998-09-29",
+      "gender": "MALE",
+      "citizenship": "USA"
+    },
+    {
+      "familyName": "Addams",
+      "firstName": "Oprah",
+      "birthDay": "2009-05-14",
+      "gender": "FEMALE",
+      "citizenship": "USA"
+    },
+    {
+      "familyName": "DiCaprio",
+      "firstName": "Leonardo",
+      "birthDay": "1965-02-22",
+      "gender": "MALE",
+      "citizenship": "CANADA"
+    },
+    {
+      "familyName": "Anderson",
+      "firstName": "Pamela",
+      "birthDay": "1967-07-01",
+      "gender": "FEMALE",
+      "citizenship": "CANADA"
+    },
+    {
+      "familyName": "DiCaprio",
+      "firstName": "Justin",
+      "gender": "MALE",
+      "birthDay": "1992-05-02",
+      "citizenship": "CANADA"
+    }
+  ],
+  "marriages": [
+    {
+      "husband": "Addams;Gomez;1970-03-30;MALE",
+      "wife": "Simpson;Morticia;1973-04-28;FEMALE",
+      "dateOnRights": "1992-07-17"
+    },
+    {
+      "husband": "DiCaprio;Leonardo;1965-02-22;MALE",
+      "wife": "Anderson;Pamela;1967-07-01;FEMALE",
+      "dateOnRights": "1990-07-17"
+    }
+  ],
+  "parenthoods": [
+    {
+      "citizen": "Addams;Gomez;1970-03-30;MALE",
+      "child": "Addams;Wednesday;1995-02-16;FEMALE",
+      "dateOnRights": "1995-02-16",
+      "parenthood": "BIRTHFATHER"
+    },
+    {
+      "citizen": "Addams;Morticia;1973-04-28;FEMALE",
+      "child": "Addams;Wednesday;1995-02-16;FEMALE",
+      "dateOnRights": "1995-02-16",
+      "parenthood": "BIRTHMOTHER"
+    },
+    {
+      "citizen": "Addams;Gomez;1970-03-30;MALE",
+      "child": "Addams;Pugsley;1998-09-29;MALE",
+      "dateOnRights": "1998-09-29",
+      "parenthood": "BIRTHFATHER"
+    },
+    {
+      "citizen": "Addams;Morticia;1973-04-28;FEMALE",
+      "child": "Addams;Pugsley;1998-09-29;MALE",
+      "dateOnRights": "1998-09-29",
+      "parenthood": "BIRTHMOTHER"
+    },
+    {
+      "citizen": "Addams;Gomez;1970-03-30;MALE",
+      "child": "Addams;Oprah;2009-05-14;FEMALE",
+      "dateOnRights": "2009-05-14",
+      "parenthood": "BIRTHFATHER"
+    },
+    {
+      "citizen": "Addams;Morticia;1973-04-28;FEMALE",
+      "child": "Addams;Oprah;2009-05-14;FEMALE",
+      "dateOnRights": "2009-05-14",
+      "parenthood": "BIRTHMOTHER"
+    },
+    {
+      "citizen": "DiCaprio;Leonardo;1965-02-22;MALE",
+      "child": "DiCaprio;Justin;1992-05-02;MALE",
+      "dateOnRights": "1992-05-02",
+      "parenthood": "BIRTHFATHER"
+    },
+    {
+      "citizen": "DiCaprio;Pamela;1967-07-01;FEMALE",
+      "child": "DiCaprio;Justin;1992-05-02;MALE",
+      "dateOnRights": "1992-05-02",
+      "parenthood": "BIRTHMOTHER"
+    }
+  ]
+}
