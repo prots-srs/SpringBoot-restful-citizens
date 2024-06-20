@@ -73,25 +73,4 @@ public class ImportToDatabaseTest {
         assertThat(citizenPersisted.getMarriages().size()).isEqualTo(1);
     }
 
-    @Test
-    void fetch_nuclear_family() {
-    }
 }
-
-// @Test
-// Optional<NuclearFamily> nuclearFamily = domainHolder.getNuclearFamily(
-// "Wednesday",
-// "Addams",
-// "1995-02-16",
-// "FEMALE");
-
-// nuclearFamily.ifPresent(fa -> System.out.println(fa));
-
-// Optional<NuclearFamily> nuclearFamilyB = domainHolder.getNuclearFamily(
-// "Oprah",
-// "Addams",
-// "2009-05-14",
-// "FEMALE");
-
-// nuclearFamilyB.ifPresent(fa -> System.out.println(fa));
-// }

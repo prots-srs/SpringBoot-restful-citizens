@@ -13,7 +13,7 @@ import com.protsdev.citizens.jsons.FullJson;
 import com.protsdev.citizens.services.JsonLoaderService;
 
 @SpringBootTest
-public class ImportFromJsonTest {
+public class LoadJsonTest {
 
     @Autowired
     JsonLoaderService jsonLoader;
@@ -23,7 +23,7 @@ public class ImportFromJsonTest {
     private Integer COUNT_parenthoods = 8;
 
     @Test
-    void load_json_test() {
+    void load_json() {
         Optional<FullJson> json = jsonLoader.readJsonFromFile("demo.json");
         assertThat(json.isPresent()).isTrue();
 

@@ -3,27 +3,15 @@ package com.protsdev.citizens.models;
 import java.sql.Date;
 
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 @Embeddable
 public class DateRights {
     private Date startDay;
     private Date endDay;
-
-    public Date getStartDay() {
-        return startDay;
-    }
-
-    public void setStartDay(Date onDate) {
-        this.startDay = onDate;
-    }
-
-    public Date getEndDay() {
-        return endDay;
-    }
-
-    public void setEndDay(Date offDate) {
-        this.endDay = offDate;
-    }
 
     @Override
     public int hashCode() {

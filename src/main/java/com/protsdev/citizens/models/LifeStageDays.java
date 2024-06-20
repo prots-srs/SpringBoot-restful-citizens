@@ -3,28 +3,16 @@ package com.protsdev.citizens.models;
 import java.sql.Date;
 
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 @Embeddable
 public class LifeStageDays {
     private Date birthDay;
 
     private Date deathDay;
-
-    public Date getBirthDay() {
-        return birthDay;
-    }
-
-    public void setBirthDay(Date birthDay) {
-        this.birthDay = birthDay;
-    }
-
-    public Date getDeathDay() {
-        return deathDay;
-    }
-
-    public void setDeathDay(Date deathDay) {
-        this.deathDay = deathDay;
-    }
 
     @Override
     public int hashCode() {

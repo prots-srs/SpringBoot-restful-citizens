@@ -13,9 +13,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "CITIZEN_PARENTHOOD")
+@Setter
+@Getter
 public class Parenthood {
     private @Id @GeneratedValue Long id;
 
@@ -31,62 +35,18 @@ public class Parenthood {
     @Embedded
     private DateRights dateRights;
 
-    @Column(name = "type")
-    private TypeParenthood parenthoodType;
-
-    public TypeParenthood getParenthoodType() {
-        return parenthoodType;
-    }
-
-    public void setParenthoodType(TypeParenthood parenthoodType) {
-        this.parenthoodType = parenthoodType;
-    }
-
-    public boolean isNew() {
-        return this.id == null;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Citizen getCitizen() {
-        return citizen;
-    }
-
-    public void setCitizen(Citizen citizen) {
-        this.citizen = citizen;
-    }
-
-    public Citizen getChild() {
-        return child;
-    }
-
-    public void setChild(Citizen child) {
-        this.child = child;
-    }
-
-    public DateRights getDateRights() {
-        return dateRights;
-    }
-
-    public void setDateRights(DateRights dateRights) {
-        this.dateRights = dateRights;
-    }
+    @Column
+    private TypeParenthood type;
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        // result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((citizen == null) ? 0 : citizen.hashCode());
         result = prime * result + ((child == null) ? 0 : child.hashCode());
         result = prime * result + ((dateRights == null) ? 0 : dateRights.hashCode());
-        result = prime * result + ((parenthoodType == null) ? 0 : parenthoodType.hashCode());
+        result = prime * result + ((type == null) ? 0 : type.hashCode());
         return result;
     }
 
@@ -100,11 +60,11 @@ public class Parenthood {
             return false;
         Parenthood other = (Parenthood) obj;
 
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
+        // if (id == null) {
+        // if (other.id != null)
+        // return false;
+        // } else if (!id.equals(other.id))
+        // return false;
         if (citizen == null) {
             if (other.citizen != null)
                 return false;
@@ -120,10 +80,10 @@ public class Parenthood {
                 return false;
         } else if (!dateRights.equals(other.dateRights))
             return false;
-        if (parenthoodType == null) {
-            if (other.parenthoodType != null)
+        if (type == null) {
+            if (other.type != null)
                 return false;
-        } else if (!parenthoodType.equals(other.parenthoodType))
+        } else if (!type.equals(other.type))
             return false;
 
         return true;

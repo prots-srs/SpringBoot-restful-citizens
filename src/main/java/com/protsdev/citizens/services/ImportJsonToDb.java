@@ -4,7 +4,7 @@ import java.util.Optional;
 import java.sql.Date;
 import java.util.List;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.protsdev.citizens.enums.Gender;
 import com.protsdev.citizens.jsons.CitizenJson;
@@ -21,7 +21,7 @@ import com.protsdev.citizens.repositories.CitizenRepository;
 import com.protsdev.citizens.repositories.MarriageRepository;
 import com.protsdev.citizens.repositories.ParenthoodRepository;
 
-@Component
+@Service
 public class ImportJsonToDb {
     private JsonLoaderService jsonLoader;
     private CitizenRepository citizenRepository;
@@ -123,6 +123,7 @@ public class ImportJsonToDb {
 
                 marriageRepository.save(marriageB);
                 takePartnersFamilyName(citizenB, citizenA.getNames().getFamilyName());
+                citizenRepository.save(citizenB);
             }
 
         });
@@ -153,12 +154,11 @@ public class ImportJsonToDb {
     /*
      * change family name with persisting maiden name
      */
-    private void takePartnersFamilyName(Citizen citizen, String newFamilyName) {
+    public static void takePartnersFamilyName(Citizen citizen, String newFamilyName) {
         if (citizen.getNames().getMaidenName().isEmpty()) {
             citizen.getNames().setMaidenName(citizen.getNames().getFamilyName());
         }
         citizen.getNames().setFamilyName(newFamilyName);
-        citizenRepository.save(citizen);
     }
 
     private void persistCitizensParenthood(List<ParenthoodJson> parenthoodJsons) {
@@ -182,7 +182,7 @@ public class ImportJsonToDb {
                 parenthood.setCitizen(citizen);
                 parenthood.setChild(child);
                 parenthood.setDateRights(convertDateRights(pa.dateOnRights()));
-                parenthood.setParenthoodType(pa.parenthood());
+                parenthood.setType(pa.parenthood());
 
                 parenthoodRepository.save(parenthood);
             }
