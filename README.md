@@ -1,3 +1,3 @@
 # Java practical RESTful as HATEOAS
 
-Citizens and relations
+Citizens and their family relations
