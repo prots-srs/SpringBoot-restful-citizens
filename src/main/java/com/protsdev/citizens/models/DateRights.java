@@ -1,7 +1,11 @@
 package com.protsdev.citizens.models;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,8 +14,14 @@ import lombok.Setter;
 @Getter
 @Embeddable
 public class DateRights {
-    private Date startDay;
-    private Date endDay;
+
+    @Column(name = "start_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate startDay;
+
+    @Column(name = "end_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate endDay;
 
     @Override
     public int hashCode() {

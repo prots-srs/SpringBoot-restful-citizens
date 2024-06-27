@@ -8,6 +8,7 @@ import com.protsdev.citizens.models.Citizen;
 
 import java.util.List;
 import java.sql.Date;
+import java.time.LocalDate;
 
 public interface CitizenRepository extends JpaRepository<Citizen, Long> {
     // List<CitizenEntity> findAllByBirthDayBetween(Date from, Date to);
@@ -15,7 +16,7 @@ public interface CitizenRepository extends JpaRepository<Citizen, Long> {
     List<Citizen> findByNamesFamilyNameAndNamesFirstNameAndDays_BirthDayAndGenderAndCitizenship(
             String familyName,
             String firstName,
-            Date birthDay,
+            LocalDate birthDay,
             Gender gender,
             Citizenship citizenship);
 }

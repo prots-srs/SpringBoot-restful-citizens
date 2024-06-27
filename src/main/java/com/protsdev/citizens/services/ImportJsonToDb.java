@@ -2,6 +2,7 @@ package com.protsdev.citizens.services;
 
 import java.util.Optional;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -83,7 +84,8 @@ public class ImportJsonToDb {
     private LifeStageDays convertDays(CitizenJson citizen) {
         LifeStageDays days = new LifeStageDays();
 
-        days.setBirthDay(Date.valueOf(citizen.birthDay()));
+        // days.setBirthDay(Date.valueOf(citizen.birthDay()));
+        days.setBirthDay(LocalDate.parse(citizen.birthDay()));
 
         return days;
     }
@@ -138,7 +140,7 @@ public class ImportJsonToDb {
 
         return citizen.getNames().getFamilyName().equals(argsFind[0])
                 && citizen.getNames().getFirstName().equals(argsFind[1])
-                && citizen.getDays().getBirthDay().equals(Date.valueOf(argsFind[2]))
+                && citizen.getDays().getBirthDay().equals(LocalDate.parse(argsFind[2]))
                 && Gender.valueOf(argsFind[3]).equals(citizen.getGender());
     }
 
@@ -147,7 +149,8 @@ public class ImportJsonToDb {
      */
     private DateRights convertDateRights(String date) {
         DateRights dre = new DateRights();
-        dre.setStartDay(Date.valueOf(date));
+        // dre.setStartDay(Date.valueOf(date));
+        dre.setStartDay(LocalDate.parse(date));
         return dre;
     }
 

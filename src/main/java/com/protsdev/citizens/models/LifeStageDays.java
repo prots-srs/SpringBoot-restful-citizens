@@ -1,7 +1,11 @@
 package com.protsdev.citizens.models;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,9 +14,15 @@ import lombok.Setter;
 @Getter
 @Embeddable
 public class LifeStageDays {
-    private Date birthDay;
 
-    private Date deathDay;
+    @Column(name = "birth_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    // private Date birthDay;
+    private LocalDate birthDay;
+
+    @Column(name = "death_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate deathDay;
 
     @Override
     public int hashCode() {

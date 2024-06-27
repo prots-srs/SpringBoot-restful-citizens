@@ -3,6 +3,7 @@ package com.protsdev.citizens;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -53,7 +54,8 @@ public class ImportToDatabaseTest {
                 .findByNamesFamilyNameAndNamesFirstNameAndDays_BirthDayAndGenderAndCitizenship(
                         "Addams",
                         "Gomez",
-                        Date.valueOf("1970-03-30"),
+                        // Date.valueOf("1970-03-30"),
+                        LocalDate.parse("1970-03-30"),
                         Gender.MALE,
                         Citizenship.USA);
 

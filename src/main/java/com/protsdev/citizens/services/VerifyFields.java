@@ -13,7 +13,8 @@ import com.protsdev.citizens.enums.Gender;
 
 @Service
 public class VerifyFields {
-    private static final Logger log = LoggerFactory.getLogger(VerifyFields.class);
+    // private static final Logger log =
+    // LoggerFactory.getLogger(VerifyFields.class);
 
     private final String EMAIL_PATTERN = "^(.+)@(\\S+)$";
 
@@ -30,7 +31,7 @@ public class VerifyFields {
             Date date = Date.valueOf(maybeDate);
             dateOpt = Optional.of(date);
         } catch (Exception e) {
-            log.error("Parse date: '" + maybeDate + "' " + e.getClass());
+            // log.error("Parse date: '" + maybeDate + "' " + e.getClass());
         }
         return dateOpt;
     }
@@ -42,7 +43,7 @@ public class VerifyFields {
             Gender gender = Gender.valueOf(maybeGender);
             genderOpt = Optional.of(gender);
         } catch (Exception e) {
-            log.error("Parse gender: '" + maybeGender + "' " + e.getClass());
+            // log.error("Parse gender: '" + maybeGender + "' " + e.getClass());
         }
         return genderOpt;
     }
@@ -54,7 +55,7 @@ public class VerifyFields {
             Citizenship citizenship = Citizenship.valueOf(maybeCitizenship);
             citizenshipOpt = Optional.of(citizenship);
         } catch (Exception e) {
-            log.error("Parse citizenship: '" + maybeCitizenship + "' " + e.getClass());
+            // log.error("Parse citizenship: '" + maybeCitizenship + "' " + e.getClass());
         }
         return citizenshipOpt;
     }

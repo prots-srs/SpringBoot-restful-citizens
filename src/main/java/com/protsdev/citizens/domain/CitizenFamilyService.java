@@ -1,6 +1,5 @@
 package com.protsdev.citizens.domain;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Optional;
@@ -12,142 +11,66 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.protsdev.citizens.dto.CitizenView;
-import com.protsdev.citizens.dto.ExtendedFamily;
-import com.protsdev.citizens.dto.FieldsDefiningCitizen;
-import com.protsdev.citizens.dto.NuclearFamily;
-import com.protsdev.citizens.dto.NuclearFamilyAdult;
-import com.protsdev.citizens.dto.NuclearFamilyChild;
-import com.protsdev.citizens.enums.Citizenship;
-import com.protsdev.citizens.enums.Gender;
+import com.protsdev.citizens.dto.FamilyExtended;
+import com.protsdev.citizens.dto.FamilyNuclear;
+import com.protsdev.citizens.dto.FamilyNuclearAdult;
+import com.protsdev.citizens.dto.FamilyNuclearChild;
 import com.protsdev.citizens.enums.TypeParenthood;
 import com.protsdev.citizens.models.Citizen;
 import com.protsdev.citizens.models.Parenthood;
-import com.protsdev.citizens.repositories.CitizenRepository;
 import com.protsdev.citizens.repositories.ParenthoodRepository;
-import com.protsdev.citizens.services.VerifyFields;
 
 @Service
 public class CitizenFamilyService {
     private static final Integer ADULT_AGE_FROM = 18;
 
-    private VerifyFields verifyService;
-    private CitizenRepository citizenRepository;
     private ParenthoodRepository parenthoodRepository;
 
-    public CitizenFamilyService(
-            ParenthoodRepository parenthoodRepository,
-            CitizenRepository citizenRepository,
-            VerifyFields verifyService) {
+    public CitizenFamilyService(ParenthoodRepository parenthoodRepository) {
         this.parenthoodRepository = parenthoodRepository;
-        this.citizenRepository = citizenRepository;
-        this.verifyService = verifyService;
     }
 
-    private FieldsDefiningCitizen inputFields;
-    private Date citizenBirthDay;
-    private Gender citizenGender;
-    private Citizenship citizenCitizenship;
     private Citizen targetCitizen;
 
-    /*
-     * fetch nuclear family by strings
-     * names: first, family
-     * days: birth
-     * gender
-     * citizenship
-     */
-    public Optional<NuclearFamily> getNuclearFamily(FieldsDefiningCitizen inputFields) {
-
-        if (!defineInputFields(inputFields)) {
-            return Optional.empty();
-        }
-        if (!defineCitizen()) {
-            return Optional.empty();
-        }
+    public FamilyNuclear getNuclearFamily(Citizen citizen) {
+        targetCitizen = citizen;
 
         // get output objects
         if (isAdult()) {
-            return Optional.of(new NuclearFamilyAdult(
+            return new FamilyNuclearAdult(
                     getCitizenView(targetCitizen),
                     getCurrentPartner(),
-                    getChildrenByRights()));
+                    getChildrenByRights());
         } else {
             List<Citizen> birthParents = getBirthParents();
 
-            return Optional.of(new NuclearFamilyChild(
+            return new FamilyNuclearChild(
                     getCitizenView(targetCitizen),
                     getBirthParentsView(birthParents),
                     getAdopters(),
-                    getSiblings(birthParents)));
+                    getSiblings(birthParents));
         }
     }
 
-    public Optional<NuclearFamily> getExtendedFamily(FieldsDefiningCitizen inputFields) {
-        if (!defineInputFields(inputFields)) {
-            return Optional.empty();
-        }
-        if (!defineCitizen()) {
-            return Optional.empty();
-        }
+    public FamilyExtended getExtendedFamily(Citizen citizen) {
+        targetCitizen = citizen;
 
         List<Citizen> birthParents = getBirthParents();
 
-        return Optional.of(new ExtendedFamily(
+        return new FamilyExtended(
                 getCitizenView(targetCitizen),
                 getCurrentPartner(),
                 getChildrenByRights(),
                 getBirthParentsView(birthParents),
                 getAdopters(),
-                getSiblings(birthParents)));
-    }
-
-    /*
-     * check INPUTs
-     */
-    private boolean defineInputFields(FieldsDefiningCitizen inputFields) {
-
-        Optional<Date> birthDay = verifyService.getDateByString(inputFields.birthDay());
-        Optional<Gender> gender = verifyService.getGenderByString(inputFields.gender());
-        Optional<Citizenship> citizenship = verifyService.getCitizenshipByString(inputFields.citizenship());
-
-        if (!birthDay.isPresent() || !gender.isPresent() || !citizenship.isPresent()) {
-            return false;
-        }
-
-        this.inputFields = inputFields;
-
-        citizenBirthDay = birthDay.get();
-        citizenGender = gender.get();
-        citizenCitizenship = citizenship.get();
-
-        return true;
-    }
-
-    /*
-     * obtain targen sitizen
-     */
-    private boolean defineCitizen() {
-        List<Citizen> citizens = citizenRepository
-                .findByNamesFamilyNameAndNamesFirstNameAndDays_BirthDayAndGenderAndCitizenship(
-                        inputFields.familyName(),
-                        inputFields.firstName(),
-                        citizenBirthDay,
-                        citizenGender,
-                        citizenCitizenship);
-
-        if (citizens.size() > 0) {
-            targetCitizen = citizens.get(0);
-            return true;
-        }
-
-        return false;
+                getSiblings(birthParents));
     }
 
     /*
      * adult checker
      */
     private boolean isAdult() {
-        LocalDate ldate = targetCitizen.getDays().getBirthDay().toLocalDate();
+        LocalDate ldate = targetCitizen.getDays().getBirthDay();// .toLocalDate();
         Integer years = Period.between(ldate, LocalDate.now()).getYears();
 
         return years >= ADULT_AGE_FROM;

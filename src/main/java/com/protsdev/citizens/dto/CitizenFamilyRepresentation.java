@@ -5,16 +5,16 @@ import org.springframework.hateoas.RepresentationModel;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class CitizenFamilyResponse extends RepresentationModel<CitizenFamilyResponse> {
+public class CitizenFamilyRepresentation extends RepresentationModel<CitizenFamilyRepresentation> {
 
-    private final NuclearFamily family;
+    private final FamilyNuclear family;
 
-    public NuclearFamily getFamily() {
+    public FamilyNuclear getFamily() {
         return family;
     }
 
     @JsonCreator
-    public CitizenFamilyResponse(@JsonProperty("family") NuclearFamily family) {
+    public CitizenFamilyRepresentation(@JsonProperty("family") FamilyNuclear family) {
         this.family = family;
     }
 

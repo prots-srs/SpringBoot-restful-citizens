@@ -9,14 +9,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.LinkRelation;
 
-import com.protsdev.citizens.controllers.CitizenController;
+import com.protsdev.citizens.controllers.CitizenFamilyController;
 
 @SpringBootTest
 public class HateoasTest {
 
     @Test
     void link_test() {
-        Link link = linkTo(CitizenController.class).withRel("family");
+        Link link = linkTo(CitizenFamilyController.class).withRel("family");
 
         System.out.println("-->> link:" + link);
 
