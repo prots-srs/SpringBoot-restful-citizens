@@ -18,7 +18,8 @@ public class RootController {
         .emptyHalModel()
         .link(linkTo(methodOn(RootController.class).index()).withSelfRel())
         .link(linkTo(methodOn(CitizenController.class).index(null, null)).withRel("citizen"))
-        .link(linkTo(methodOn(CitizenFamilyController.class).index()).withRel("family"))
+        .link(linkTo(methodOn(MarriageController.class).index()).withRel("marriage"))
+        .link(linkTo(methodOn(FamilyController.class).index()).withRel("family"))
         .build();
 
     return ResponseEntity.ok(model);

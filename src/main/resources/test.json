@@ -1,0 +1,45 @@
+{
+  "family": {
+    "citizen": {
+      "name": "Oprah Addams",
+      "lifeDays": "2009-05-14",
+      "gender": "FEMALE",
+      "citizenship": "USA"
+    },
+    "partner": [],
+    "children": [],
+    "birthparents": [
+      {
+        "name": "Morticia Addams (Simpson)",
+        "lifeDays": "1973-04-28",
+        "gender": "FEMALE",
+        "citizenship": "USA"
+      },
+      {
+        "name": "Gomez Addams",
+        "lifeDays": "1970-03-30",
+        "gender": "MALE",
+        "citizenship": "USA"
+      }
+    ],
+    "adopters": [],
+    "siblings": [
+      {
+        "name": "Wednesday Addams",
+        "lifeDays": "1995-02-16",
+        "gender": "FEMALE",
+        "citizenship": "USA"
+      },
+      {
+        "name": "Pugsley Addams",
+        "lifeDays": "1998-09-29",
+        "gender": "MALE",
+        "citizenship": "USA"
+      }
+    ]
+  },
+  "_links": {
+    "self": { "href": "http://localhost/api/family/extended" },
+    "index": { "href": "http://localhost/api/family" }
+  }
+}

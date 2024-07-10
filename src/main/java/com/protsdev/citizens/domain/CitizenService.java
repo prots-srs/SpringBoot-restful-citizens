@@ -1,22 +1,33 @@
 package com.protsdev.citizens.domain;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-
-import javax.swing.text.html.Option;
-
-import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
-
 import com.protsdev.citizens.dto.CitizenRequest;
 import com.protsdev.citizens.models.Citizen;
 import com.protsdev.citizens.models.CitizenName;
 import com.protsdev.citizens.models.LifeStageDays;
 import com.protsdev.citizens.repositories.CitizenRepository;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Optional;
+import org.springframework.stereotype.Service;
 
+/**
+ * Citizen service.
+ * obtain citizen:
+ * -by required fields,
+ * -by id+hashCode
+ * create
+ * update (proxy to repository)
+ * checkers:
+ * -adult
+ */
 @Service
 public class CitizenService {
+  private Map<String, String> messages = new HashMap<>();
+
+  public static final Integer ADULT_AGE_FROM = 18;
 
   private CitizenRepository citizenRepository;
 
@@ -28,62 +39,61 @@ public class CitizenService {
 
   CitizenService(CitizenRepository citizenRepository) {
     this.citizenRepository = citizenRepository;
+
+    messages.put("error_null", "Fields '%s' have null value.");
+    messages.put("error_missing", "Citizen by %s %s, birthDay at %s, has gender %s and citizenship %s is missing");
   }
 
-  /*
-   * obtain citizen
+  /**
+   * obtain citizen.
    * error in lastError
    */
-  public Optional<Citizen> fetchCitizen(CitizenRequest citizenResponse, BindingResult result) {
+  public Optional<Citizen> fetchCitizen(CitizenRequest inputFields) {
 
     lastError = "";
     Optional<Citizen> citizen = Optional.empty();
 
-    // check binding errors
-    if (result.hasErrors()) {
-      lastError = result.getAllErrors().toString();
-    }
-
-    if (lastError.length() == 0) {
-      // check nullable fields
-      var requareError = citizenResponse.defineRequaredFields();
-      if (requareError.length() > 0) {
-        lastError = String.format("Fields '%s' have null value", requareError);
-      }
+    // check nullable fields
+    var requareError = inputFields.defineRequaredFields();
+    if (requareError.length() > 0) {
+      lastError = String.format(messages.get("error_null"), requareError);
     }
 
     if (lastError.length() == 0) {
       List<Citizen> citizens = citizenRepository
           .findByNamesFamilyNameAndNamesFirstNameAndDays_BirthDayAndGenderAndCitizenship(
-              citizenResponse.getFamilyName(),
-              citizenResponse.getFirstName(),
-              citizenResponse.getBirthDay(),
-              citizenResponse.getGender(),
-              citizenResponse.getCitizenship());
+              inputFields.getFamilyName(),
+              inputFields.getFirstName(),
+              inputFields.getBirthDay(),
+              inputFields.getGender(),
+              inputFields.getCitizenship());
 
       if (citizens.size() > 0) {
         citizen = Optional.of(citizens.get(0));
       } else {
         lastError = String.format(
-            "Citizen by %s %s, birthDay at %s, has gender %s and citizenship %s is missing",
-            citizenResponse.getFirstName(),
-            citizenResponse.getFamilyName(),
-            citizenResponse.getBirthDay(),
-            citizenResponse.getGender(),
-            citizenResponse.getCitizenship());
+            messages.get("error_missing"),
+            inputFields.getFirstName(),
+            inputFields.getFamilyName(),
+            inputFields.getBirthDay(),
+            inputFields.getGender(),
+            inputFields.getCitizenship());
       }
     }
 
     return citizen;
   }
 
-  public Optional<Citizen> create(CitizenRequest cR) {
+  /**
+   * create citizen from success request.
+   */
+  public Optional<Citizen> create(CitizenRequest citizenRequest) {
 
     Citizen citizenEntity = new Citizen();
-    citizenEntity.setNames(getNames(cR.getFirstName(), cR.getFamilyName()));
-    citizenEntity.setDays(getLifeDays(cR.getBirthDay()));
-    citizenEntity.setGender(cR.getGender());
-    citizenEntity.setCitizenship(cR.getCitizenship());
+    citizenEntity.setNames(getNames(citizenRequest.getFirstName(), citizenRequest.getFamilyName()));
+    citizenEntity.setDays(getLifeDays(citizenRequest.getBirthDay()));
+    citizenEntity.setGender(citizenRequest.getGender());
+    citizenEntity.setCitizenship(citizenRequest.getCitizenship());
 
     Optional<Citizen> ci = Optional.of(citizenRepository.save(citizenEntity));
 
@@ -107,8 +117,8 @@ public class CitizenService {
     return days;
   }
 
-  /*
-   * find by id and hashcode
+  /**
+   * find by id and hashcode.
    */
   public Optional<Citizen> findById(Long id, Integer hashCode) {
 
@@ -128,10 +138,30 @@ public class CitizenService {
     return citizen;
   }
 
-  /*
+  /**
    * update
    */
   public Citizen update(Citizen citizen) {
     return citizenRepository.save(citizen);
+  }
+
+  /**
+   * Check for adult citizen
+   */
+  public boolean isAdult(Citizen citizen) {
+    LocalDate ldate = citizen.getDays().getBirthDay();
+    Integer years = Period.between(ldate, LocalDate.now()).getYears();
+
+    return years >= ADULT_AGE_FROM;
+  }
+
+  /**
+   * change family name with persisting maiden name
+   */
+  public void setMaidenName(Citizen citizen, String newFamilyName) {
+    if (citizen.getNames().getMaidenName().isEmpty()) {
+      citizen.getNames().setMaidenName(citizen.getNames().getFamilyName());
+    }
+    citizen.getNames().setFamilyName(newFamilyName);
   }
 }

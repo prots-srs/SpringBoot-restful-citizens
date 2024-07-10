@@ -8,6 +8,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class CitizenRepresentation extends RepresentationModel<CitizenRepresentation> {
   private final CitizenView citizen;
   private final Integer hashCode;
+  private final Long id;
+
+  public Long getId() {
+    return id;
+  }
 
   public Integer getHashCode() {
     return hashCode;
@@ -20,8 +25,10 @@ public class CitizenRepresentation extends RepresentationModel<CitizenRepresenta
   @JsonCreator
   public CitizenRepresentation(
       @JsonProperty("citizen") CitizenView citizen,
+      @JsonProperty("id") Long id,
       @JsonProperty("hashCode") Integer hashCode) {
     this.citizen = citizen;
     this.hashCode = hashCode;
+    this.id = id;
   }
 }

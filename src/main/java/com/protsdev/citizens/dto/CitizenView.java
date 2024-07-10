@@ -11,7 +11,7 @@ public record CitizenView(
   /*
    * Output View
    */
-  public static CitizenView converCitizenToView(Citizen citizen) {
+  public static CitizenView convertCitizenToView(Citizen citizen) {
     String name = citizen.getNames().getFirstName() + " " + citizen.getNames().getFamilyName();
     if (citizen.getNames().getMaidenName().length() > 0) {
       name = name + " (" + citizen.getNames().getMaidenName() + ")";

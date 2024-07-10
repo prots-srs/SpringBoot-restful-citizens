@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.protsdev.citizens.domain.CitizenService;
-import com.protsdev.citizens.dto.CitizenRequestEx;
+import com.protsdev.citizens.dto.CitizenRequestUpdate;
 import com.protsdev.citizens.dto.CitizenRequest;
 import com.protsdev.citizens.models.Citizen;
 
@@ -31,62 +31,74 @@ import com.protsdev.citizens.models.Citizen;
 @RequestMapping("/api/citizen")
 public class CitizenController {
   @Autowired
-  CitizenService citizenService;
+  private CitizenService citizenService;
 
   @Autowired
-  CitizenModelAssembler assembler;
+  private CitizenModelAssembler assembler;
 
   @GetMapping
-  public ResponseEntity<?> index(CitizenRequest inputFields, BindingResult result) {
+  public ResponseEntity<?> index(CitizenRequest inputFields, BindingResult bindingResult) {
 
     Link selfLink = linkTo(methodOn(CitizenController.class).index(null, null)).withSelfRel();
     selfLink.andAffordance(afford(methodOn(CitizenController.class).create(null, null)));
     selfLink.andAffordance(afford(methodOn(CitizenController.class).update(null, null, null)));
 
-    Optional<Citizen> citizen = citizenService.fetchCitizen(inputFields, result);
-    if (citizen.isPresent()) {
-      return ResponseEntity.ok(assembler.toModel(citizen.get()));
+    String errorMessage;
+    if (bindingResult.hasErrors()) {
+      errorMessage = bindingResult.getAllErrors().toString();
+    } else {
+
+      Optional<Citizen> citizen = citizenService.fetchCitizen(inputFields);
+      if (citizen.isPresent()) {
+        return ResponseEntity.ok(assembler.toModel(citizen.get()));
+      } else {
+        errorMessage = citizenService.getLastError();
+      }
     }
 
     return ResponseEntity
         .badRequest()
-        .body(FormTemplateFactory.buildCitizenFormTemplateModel(citizenService.getLastError(), selfLink, null));
+        .body(FormTemplateFactory.buildCitizenFormTemplateModel(errorMessage, selfLink, null));
   }
 
   /*
    * create new citizen
    */
   @PostMapping
-  public ResponseEntity<?> create(CitizenRequest inputFields, BindingResult result) {
+  public ResponseEntity<?> create(CitizenRequest inputFields, BindingResult bindingResult) {
 
     String errorMessage;
-    Optional<Citizen> citizen = citizenService.fetchCitizen(inputFields, result);
-
-    if (citizen.isPresent()) {
-      errorMessage = String.format(
-          "Citizen by %s %s, birthDay at %s, has gender %s and citizenship %s is current present",
-          inputFields.getFirstName(),
-          inputFields.getFamilyName(),
-          inputFields.getBirthDay(),
-          inputFields.getGender(),
-          inputFields.getCitizenship());
+    if (bindingResult.hasErrors()) {
+      errorMessage = bindingResult.getAllErrors().toString();
     } else {
 
-      var requareError = inputFields.defineRequaredFields();
-      if (requareError.length() > 0) {
-        errorMessage = String.format("Fields '%s' have null value", requareError);
+      Optional<Citizen> citizen = citizenService.fetchCitizen(inputFields);
+
+      if (citizen.isPresent()) {
+        errorMessage = String.format(
+            "Citizen by %s %s, birthDay at %s, has gender %s and citizenship %s is current present",
+            inputFields.getFirstName(),
+            inputFields.getFamilyName(),
+            inputFields.getBirthDay(),
+            inputFields.getGender(),
+            inputFields.getCitizenship());
       } else {
 
-        Optional<Citizen> citizenNew = citizenService.create(inputFields);
-
-        if (citizenNew.isPresent()) {
-          return ResponseEntity
-              // .created(linkTo(methodOn(CitizenController.class).newCitizen(null,
-              // null)).toUri())
-              .status(HttpStatus.CREATED)
-              .body(assembler.toModel(citizenNew.get()));
+        var requareError = inputFields.defineRequaredFields();
+        if (requareError.length() > 0) {
+          errorMessage = String.format("Fields '%s' have null value", requareError);
         } else {
-          errorMessage = "Error persisting citizen";
+
+          Optional<Citizen> citizenNew = citizenService.create(inputFields);
+          if (citizenNew.isPresent()) {
+            return ResponseEntity
+                // .created(linkTo(methodOn(CitizenController.class).newCitizen(null,
+                // null)).toUri())
+                .status(HttpStatus.CREATED)
+                .body(assembler.toModel(citizenNew.get()));
+          } else {
+            errorMessage = "Error persisting citizen";
+          }
         }
       }
     }
@@ -102,22 +114,18 @@ public class CitizenController {
    * updates
    */
   @PostMapping("/{id}")
-  public ResponseEntity<?> update(@PathVariable Long id, CitizenRequestEx inputFields,
-      BindingResult result) {
+  public ResponseEntity<?> update(@PathVariable Long id, CitizenRequestUpdate inputFields,
+      BindingResult bindingResult) {
 
     String errorMessage = "";
 
-    if (result.hasErrors()) {
-      errorMessage = result.getAllErrors().toString();
-    }
-
-    if (errorMessage.length() == 0) {
+    if (bindingResult.hasErrors()) {
+      errorMessage = bindingResult.getAllErrors().toString();
+    } else {
       // check null
       if (inputFields.getHashCode() == null) {
         errorMessage = "HashCode is null";
-      }
-
-      if (errorMessage.length() == 0) {
+      } else {
         // get citizen
         Optional<Citizen> citizen = citizenService.findById(id, inputFields.getHashCode());
         if (citizen.isPresent()) {
@@ -158,10 +166,9 @@ public class CitizenController {
 
     return ResponseEntity
         .badRequest()
-        .body(FormTemplateFactory.buildCitizenFormTemplateModel(
+        .body(FormTemplateFactory.buildCitizenUpdateFormTemplateModel(
             errorMessage,
-            linkTo(methodOn(CitizenController.class).update(id, null, null)).withSelfRel(),
-            null));
+            linkTo(methodOn(CitizenController.class).update(id, null, null)).withSelfRel()));
   }
 
 }

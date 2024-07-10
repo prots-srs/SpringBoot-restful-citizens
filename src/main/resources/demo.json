@@ -55,6 +55,34 @@
       "gender": "MALE",
       "birthDay": "1992-05-02",
       "citizenship": "CANADA"
+    },
+    {
+      "firstName": "Chris",
+      "familyName": "Watson",
+      "birthDay": "1960-10-03",
+      "gender": "MALE",
+      "citizenship": "UK"
+    },
+    {
+      "firstName": "Jacqueline",
+      "familyName": "Luesby",
+      "birthDay": "1961-07-27",
+      "gender": "FEMALE",
+      "citizenship": "UK"
+    },
+    {
+      "firstName": "Emma",
+      "familyName": "Watson",
+      "birthDay": "1990-04-15",
+      "gender": "FEMALE",
+      "citizenship": "UK"
+    },
+    {
+      "firstName": "Alex",
+      "familyName": "Watson",
+      "birthDay": "1995-11-04",
+      "gender": "MALE",
+      "citizenship": "UK"
     }
   ],
   "marriages": [
@@ -116,6 +144,30 @@
       "citizen": "DiCaprio;Pamela;1967-07-01;FEMALE",
       "child": "DiCaprio;Justin;1992-05-02;MALE",
       "dateOnRights": "1992-05-02",
+      "parenthood": "BIRTHMOTHER"
+    },
+    {
+      "citizen": "Watson;Chris;1960-10-03;MALE",
+      "child": "Watson;Emma;1990-04-15;FEMALE",
+      "dateOnRights": "1990-04-15",
+      "parenthood": "BIRTHFATHER"
+    },
+    {
+      "citizen": "Luesby;Jacqueline;1961-07-27;FEMALE",
+      "child": "Watson;Emma;1990-04-15;FEMALE",
+      "dateOnRights": "1990-04-15",
+      "parenthood": "BIRTHMOTHER"
+    },
+    {
+      "citizen": "Watson;Chris;1960-10-03;MALE",
+      "child": "Watson;Alex;1995-11-04;MALE",
+      "dateOnRights": "1995-11-04",
+      "parenthood": "BIRTHFATHER"
+    },
+    {
+      "citizen": "Luesby;Jacqueline;1961-07-27;FEMALE",
+      "child": "Watson;Alex;1995-11-04;MALE",
+      "dateOnRights": "1995-11-04",
       "parenthood": "BIRTHMOTHER"
     }
   ]

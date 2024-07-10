@@ -1,8 +1,5 @@
 package com.protsdev.citizens.domain;
 
-import java.time.LocalDate;
-import java.time.Period;
-import java.util.Optional;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -21,13 +18,14 @@ import com.protsdev.citizens.models.Parenthood;
 import com.protsdev.citizens.repositories.ParenthoodRepository;
 
 @Service
-public class CitizenFamilyService {
-  private static final Integer ADULT_AGE_FROM = 18;
+public class FamilyService {
+  private final ParenthoodRepository parenthoodRepository;
+  private final CitizenService citizenService;
 
-  private ParenthoodRepository parenthoodRepository;
-
-  public CitizenFamilyService(ParenthoodRepository parenthoodRepository) {
+  public FamilyService(ParenthoodRepository parenthoodRepository,
+      CitizenService citizenService) {
     this.parenthoodRepository = parenthoodRepository;
+    this.citizenService = citizenService;
   }
 
   private Citizen targetCitizen;
@@ -36,16 +34,16 @@ public class CitizenFamilyService {
     targetCitizen = citizen;
 
     // get output objects
-    if (isAdult()) {
+    if (citizenService.isAdult(targetCitizen)) {
       return new FamilyNuclearAdult(
-          CitizenView.converCitizenToView(targetCitizen),
+          CitizenView.convertCitizenToView(targetCitizen),
           getCurrentPartner(),
           getChildrenByRights());
     } else {
       List<Citizen> birthParents = getBirthParents();
 
       return new FamilyNuclearChild(
-          CitizenView.converCitizenToView(targetCitizen),
+          CitizenView.convertCitizenToView(targetCitizen),
           getBirthParentsView(birthParents),
           getAdopters(),
           getSiblings(birthParents));
@@ -58,22 +56,12 @@ public class CitizenFamilyService {
     List<Citizen> birthParents = getBirthParents();
 
     return new FamilyExtended(
-        CitizenView.converCitizenToView(targetCitizen),
+        CitizenView.convertCitizenToView(targetCitizen),
         getCurrentPartner(),
         getChildrenByRights(),
         getBirthParentsView(birthParents),
         getAdopters(),
         getSiblings(birthParents));
-  }
-
-  /*
-   * adult checker
-   */
-  private boolean isAdult() {
-    LocalDate ldate = targetCitizen.getDays().getBirthDay();// .toLocalDate();
-    Integer years = Period.between(ldate, LocalDate.now()).getYears();
-
-    return years >= ADULT_AGE_FROM;
   }
 
   /*
@@ -86,11 +74,11 @@ public class CitizenFamilyService {
 
     List<Citizen> partnersAll = targetCitizen.getMarriages()
         .stream()
-        .filter(ma -> ma.getDateRights().getStartDay() != null && ma.getDateRights().getEndDay() == null)
+        .filter(ma -> ma.getDateRights().getStartDate() != null && ma.getDateRights().getEndDate() == null)
         .map(ma -> ma.getPartner()).toList();
 
     if (partnersAll.size() > 0) {
-      partnerView.add(CitizenView.converCitizenToView(partnersAll.get(0)));
+      partnerView.add(CitizenView.convertCitizenToView(partnersAll.get(0)));
     }
 
     return partnerView;
@@ -106,10 +94,10 @@ public class CitizenFamilyService {
 
     List<Citizen> children = targetCitizen.getParenthoods()
         .stream()
-        .filter(pa -> pa.getDateRights().getStartDay() != null && pa.getDateRights().getEndDay() == null)
+        .filter(pa -> pa.getDateRights().getStartDate() != null && pa.getDateRights().getEndDate() == null)
         .map(pa -> pa.getChild()).toList();
 
-    children.forEach(ci -> childrenView.add(CitizenView.converCitizenToView(ci)));
+    children.forEach(ci -> childrenView.add(CitizenView.convertCitizenToView(ci)));
 
     return childrenView;
   }
@@ -134,7 +122,7 @@ public class CitizenFamilyService {
 
   private Set<CitizenView> getBirthParentsView(List<Citizen> birthParents) {
     Set<CitizenView> birthparentsView = new HashSet<>();
-    birthParents.forEach(ci -> birthparentsView.add(CitizenView.converCitizenToView(ci)));
+    birthParents.forEach(ci -> birthparentsView.add(CitizenView.convertCitizenToView(ci)));
 
     return birthparentsView;
   }
@@ -143,7 +131,7 @@ public class CitizenFamilyService {
     Set<CitizenView> adoptersView = new HashSet<>();
 
     List<Parenthood> adopterList = parenthoodRepository.findByChildAndType(targetCitizen, TypeParenthood.ADOPTER);
-    adopterList.forEach(ci -> adoptersView.add(CitizenView.converCitizenToView(ci.getCitizen())));
+    adopterList.forEach(ci -> adoptersView.add(CitizenView.convertCitizenToView(ci.getCitizen())));
 
     return adoptersView;
   }
@@ -155,7 +143,7 @@ public class CitizenFamilyService {
       Set<Parenthood> parenthoods = ci.getParenthoods();
       parenthoods.forEach(pa -> {
         if (!pa.getChild().equals(targetCitizen)) {
-          siblingsView.add(CitizenView.converCitizenToView(pa.getChild()));
+          siblingsView.add(CitizenView.convertCitizenToView(pa.getChild()));
         }
       });
     });
