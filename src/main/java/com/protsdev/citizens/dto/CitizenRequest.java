@@ -1,55 +1,65 @@
 package com.protsdev.citizens.dto;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 import com.protsdev.citizens.enums.Citizenship;
 import com.protsdev.citizens.enums.Gender;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public class CitizenRequest {
-  private String firstName;
-  private String familyName;
-  private LocalDate birthDay;
-  private Gender gender;
-  private Citizenship citizenship;
 
-  public String defineRequaredFields() {
-    var errors = new ArrayList<String>();
+    @NotBlank
+    @Size(max = 64)
+    protected String firstName;
 
-    if (firstName == null)
-      errors.add("firstName");
-    if (familyName == null)
-      errors.add("familyName");
-    if (birthDay == null)
-      errors.add("birthDay");
-    if (gender == null)
-      errors.add("gender");
-    if (citizenship == null)
-      errors.add("citizenship");
+    @NotBlank
+    @Size(max = 64)
+    protected String familyName;
 
-    return String.join(",", errors);
-  }
+    // @NotBlank
+    @Size(max = 64)
+    protected String secondName;
 
-  public void setFirstName(String firstName) {
-    this.firstName = firstName.trim();
-  }
+    @NotNull
+    protected LocalDate birthDate;
 
-  public void setFamilyName(String familyName) {
-    this.familyName = familyName.trim();
-  }
+    @NotNull
+    protected Gender gender;
 
-  public void setBirthDay(LocalDate birthDay) {
-    this.birthDay = birthDay;
-  }
+    @NotNull
+    protected Citizenship citizenship;
 
-  public void setGender(Gender gender) {
-    this.gender = gender;
-  }
+    public void setFirstName(String name) {
+        firstName = name.trim();
+    }
 
-  public void setCitizenship(Citizenship citizenship) {
-    this.citizenship = citizenship;
-  }
+    public void setFamilyName(String name) {
+        familyName = name.trim();
+    }
+
+    public void setSecondName(String name) {
+        if (name == null) {
+            name = "";
+        }
+        secondName = name.trim();
+    }
+
+    public void setBirthDate(LocalDate date) {
+        birthDate = date;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public void setCitizenship(Citizenship citizenship) {
+        this.citizenship = citizenship;
+    }
 }

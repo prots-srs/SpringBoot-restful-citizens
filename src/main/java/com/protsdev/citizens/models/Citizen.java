@@ -4,7 +4,9 @@ import com.protsdev.citizens.enums.Citizenship;
 import com.protsdev.citizens.enums.Gender;
 
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Set;
 
@@ -22,6 +25,7 @@ import org.hibernate.annotations.FetchMode;
 @Table(name = "CITIZENS")
 @Setter
 @Getter
+@ToString
 public class Citizen {
 
     @Id
@@ -44,6 +48,10 @@ public class Citizen {
     @Fetch(FetchMode.SUBSELECT)
     private Set<Parenthood> parenthoods;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "avatar_id", referencedColumnName = "id")
+    private FileUpload avatar;
+
     public boolean isNew() {
         return this.id == null;
     }
@@ -52,7 +60,6 @@ public class Citizen {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        // result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((names == null) ? 0 : names.hashCode());
         result = prime * result + ((days == null) ? 0 : days.hashCode());
         result = prime * result + ((gender == null) ? 0 : gender.hashCode());
@@ -70,11 +77,6 @@ public class Citizen {
             return false;
         Citizen other = (Citizen) obj;
 
-        // if (id == null) {
-        // if (other.id != null)
-        // return false;
-        // } else if (!id.equals(other.id))
-        // return false;
         if (names == null) {
             if (other.names != null)
                 return false;

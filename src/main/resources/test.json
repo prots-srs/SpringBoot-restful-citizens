@@ -1,45 +1,50 @@
 {
-  "family": {
-    "citizen": {
-      "name": "Oprah Addams",
-      "lifeDays": "2009-05-14",
-      "gender": "FEMALE",
-      "citizenship": "USA"
-    },
-    "partner": [],
-    "children": [],
-    "birthparents": [
-      {
-        "name": "Morticia Addams (Simpson)",
-        "lifeDays": "1973-04-28",
-        "gender": "FEMALE",
-        "citizenship": "USA"
-      },
-      {
-        "name": "Gomez Addams",
-        "lifeDays": "1970-03-30",
-        "gender": "MALE",
-        "citizenship": "USA"
-      }
-    ],
-    "adopters": [],
-    "siblings": [
-      {
-        "name": "Wednesday Addams",
-        "lifeDays": "1995-02-16",
-        "gender": "FEMALE",
-        "citizenship": "USA"
-      },
-      {
-        "name": "Pugsley Addams",
-        "lifeDays": "1998-09-29",
-        "gender": "MALE",
-        "citizenship": "USA"
-      }
-    ]
+  "_embedded": {
+    "formTemplate": {
+      "error": "[Field error in object 'marriageRequest' on field 'familyNameA': rejected value []; codes [NotBlank.marriageRequest.familyNameA,NotBlank.familyNameA,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [marriageRequest.familyNameA,familyNameA]; arguments []; default message [familyNameA]]; default message [must not be blank], Field error in object 'marriageRequest' on field 'firstNameB': rejected value []; codes [NotBlank.marriageRequest.firstNameB,NotBlank.firstNameB,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [marriageRequest.firstNameB,firstNameB]; arguments []; default message [firstNameB]]; default message [must not be blank]]",
+      "title": "Input citizens for marriage",
+      "contentType": "application/json|multipart/form-data",
+      "method": "POST",
+      "properties": [
+        { "name": "firstNameA", "type": "text", "required": "true" },
+        { "name": "familyNameA", "type": "text", "required": "true" },
+        { "name": "secondNameA", "type": "text", "required": "false" },
+        { "name": "birthDateA", "type": "text", "required": "true" },
+        {
+          "name": "genderA",
+          "options": "MALE,FEMALE",
+          "type": "select",
+          "required": "true"
+        },
+        {
+          "name": "citizenshipA",
+          "options": "USA,UKRAINIAN,CANADA,UK",
+          "type": "select",
+          "required": "true"
+        },
+        { "name": "firstNameB", "type": "text", "required": "true" },
+        { "name": "familyNameB", "type": "text", "required": "true" },
+        { "name": "secondNameB", "type": "text", "required": "false" },
+        { "name": "birthDateB", "type": "text", "required": "true" },
+        {
+          "name": "genderB",
+          "options": "MALE,FEMALE",
+          "type": "select",
+          "required": "true"
+        },
+        {
+          "name": "citizenshipB",
+          "options": "USA,UKRAINIAN,CANADA,UK",
+          "type": "select",
+          "required": "true"
+        },
+        { "name": "dateOfEvent", "type": "text", "required": "false" },
+        { "name": "giveBFamilyNameA", "type": "checkbox", "required": "false" }
+      ]
+    }
   },
   "_links": {
-    "self": { "href": "http://localhost/api/family/extended" },
-    "index": { "href": "http://localhost/api/family" }
+    "self": { "href": "http://localhost/api/marriage/create" },
+    "index": { "href": "http://localhost/api/marriage" }
   }
 }

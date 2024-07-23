@@ -6,7 +6,7 @@ Citizens and their family relations:
 - parenthood
 - sibling
 
-Defined operations:
+## Defined operations:
 
 Read by:
 
@@ -23,6 +23,7 @@ Create by:
 
 Update by:
 
+- [x] citizen avatar
 - [x] citizen by death, change family name, change citizenship
 - [x] dissolution marriage
 - [ ] clear parenthood

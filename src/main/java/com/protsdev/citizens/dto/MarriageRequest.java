@@ -1,8 +1,13 @@
 package com.protsdev.citizens.dto;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 
+import com.protsdev.citizens.enums.Citizenship;
+import com.protsdev.citizens.enums.Gender;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,26 +16,48 @@ import lombok.ToString;
 @Setter
 @ToString
 public class MarriageRequest {
-  private Long idCitizenA;
-  private Integer hashCodeCitizenA;
-  private Long idCitizenB;
-  private Integer hashCodeCitizenB;
-  private LocalDate dateOfEvent = LocalDate.now();
-  private Boolean giveHusbandFamilyName = Boolean.valueOf(true);
+    @NotBlank
+    @Size(max = 64)
+    protected String firstNameA;
 
-  public String defineRequaredFields() {
-    var errors = new ArrayList<String>();
+    @NotBlank
+    @Size(max = 64)
+    protected String familyNameA;
 
-    if (idCitizenA == null || idCitizenA.equals(Long.valueOf(0)))
-      errors.add("idCitizenA");
-    if (hashCodeCitizenA == null || hashCodeCitizenA.equals(Integer.valueOf(0)))
-      errors.add("hashCodeCitizenA");
+    // @NotBlank
+    @Size(max = 64)
+    protected String secondNameA;
 
-    if (idCitizenB == null || idCitizenB.equals(Long.valueOf(0)))
-      errors.add("idCitizenB");
-    if (hashCodeCitizenA == null || hashCodeCitizenA.equals(Integer.valueOf(0)))
-      errors.add("hashCodeCitizenB");
+    @NotNull
+    protected LocalDate birthDateA;
 
-    return String.join(",", errors);
-  }
+    @NotNull
+    protected Gender genderA;
+
+    @NotNull
+    protected Citizenship citizenshipA;
+
+    @NotBlank
+    @Size(max = 64)
+    protected String firstNameB;
+
+    @NotBlank
+    @Size(max = 64)
+    protected String familyNameB;
+
+    // @NotBlank
+    @Size(max = 64)
+    protected String secondNameB;
+
+    @NotNull
+    protected LocalDate birthDateB;
+
+    @NotNull
+    protected Gender genderB;
+
+    @NotNull
+    protected Citizenship citizenshipB;
+
+    private LocalDate dateOfEvent = LocalDate.now();
+    private Boolean giveBFamilyNameA = Boolean.valueOf(true);
 }

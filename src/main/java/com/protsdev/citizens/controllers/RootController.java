@@ -12,16 +12,17 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 @RequestMapping("/api")
 public class RootController {
 
-  @GetMapping
-  public ResponseEntity<?> index() {
-    var model = HalModelBuilder
-        .emptyHalModel()
-        .link(linkTo(methodOn(RootController.class).index()).withSelfRel())
-        .link(linkTo(methodOn(CitizenController.class).index(null, null)).withRel("citizen"))
-        .link(linkTo(methodOn(MarriageController.class).index()).withRel("marriage"))
-        .link(linkTo(methodOn(FamilyController.class).index()).withRel("family"))
-        .build();
+    @GetMapping
+    public ResponseEntity<?> index() {
+        var model = HalModelBuilder
+                .emptyHalModel()
+                .link(linkTo(methodOn(RootController.class).index()).withSelfRel())
+                .link(linkTo(methodOn(CitizenController.class).index(null,
+                        null)).withRel("citizen"))
+                .link(linkTo(methodOn(MarriageController.class).index()).withRel("marriage"))
+                .link(linkTo(methodOn(FamilyController.class).index()).withRel("family"))
+                .build();
 
-    return ResponseEntity.ok(model);
-  }
+        return ResponseEntity.ok(model);
+    }
 }

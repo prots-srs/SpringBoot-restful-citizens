@@ -12,15 +12,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.protsdev.citizens.domain.CitizenService;
 import com.protsdev.citizens.dto.CitizenRequestUpdate;
 import com.protsdev.citizens.dto.CitizenRequest;
 import com.protsdev.citizens.models.Citizen;
+import com.protsdev.citizens.services.FormTemplateModel;
+import jakarta.validation.Valid;
 
 /*
  * get + form: receive citizen with id + hashcode
@@ -30,145 +31,72 @@ import com.protsdev.citizens.models.Citizen;
 @RestController
 @RequestMapping("/api/citizen")
 public class CitizenController {
-  @Autowired
-  private CitizenService citizenService;
+    @Autowired
+    private CitizenService citizenService;
+    @Autowired
+    private CitizenModelAssembler assembler;
+    @Autowired
+    private FormTemplateModel formTemplateFactory;
 
-  @Autowired
-  private CitizenModelAssembler assembler;
+    // public CitizenController(
+    // CitizenService citizenService,
+    // CitizenModelAssembler assembler,
+    // StorageService storageService) {
+    // this.citizenService = citizenService;
+    // this.assembler = assembler;
+    // }
 
-  @GetMapping
-  public ResponseEntity<?> index(CitizenRequest inputFields, BindingResult bindingResult) {
+    @GetMapping
+    public ResponseEntity<?> index(@Valid CitizenRequest iFs,
+            BindingResult bR) {
 
-    Link selfLink = linkTo(methodOn(CitizenController.class).index(null, null)).withSelfRel();
-    selfLink.andAffordance(afford(methodOn(CitizenController.class).create(null, null)));
-    selfLink.andAffordance(afford(methodOn(CitizenController.class).update(null, null, null)));
+        Link selfLink = linkTo(methodOn(CitizenController.class).index(null, null)).withSelfRel();
+        selfLink.andAffordance(afford(methodOn(CitizenController.class).store(null, null)));
 
-    String errorMessage;
-    if (bindingResult.hasErrors()) {
-      errorMessage = bindingResult.getAllErrors().toString();
-    } else {
-
-      Optional<Citizen> citizen = citizenService.fetchCitizen(inputFields);
-      if (citizen.isPresent()) {
-        return ResponseEntity.ok(assembler.toModel(citizen.get()));
-      } else {
-        errorMessage = citizenService.getLastError();
-      }
-    }
-
-    return ResponseEntity
-        .badRequest()
-        .body(FormTemplateFactory.buildCitizenFormTemplateModel(errorMessage, selfLink, null));
-  }
-
-  /*
-   * create new citizen
-   */
-  @PostMapping
-  public ResponseEntity<?> create(CitizenRequest inputFields, BindingResult bindingResult) {
-
-    String errorMessage;
-    if (bindingResult.hasErrors()) {
-      errorMessage = bindingResult.getAllErrors().toString();
-    } else {
-
-      Optional<Citizen> citizen = citizenService.fetchCitizen(inputFields);
-
-      if (citizen.isPresent()) {
-        errorMessage = String.format(
-            "Citizen by %s %s, birthDay at %s, has gender %s and citizenship %s is current present",
-            inputFields.getFirstName(),
-            inputFields.getFamilyName(),
-            inputFields.getBirthDay(),
-            inputFields.getGender(),
-            inputFields.getCitizenship());
-      } else {
-
-        var requareError = inputFields.defineRequaredFields();
-        if (requareError.length() > 0) {
-          errorMessage = String.format("Fields '%s' have null value", requareError);
+        String errorMessage;
+        if (bR.hasErrors()) {
+            errorMessage = bR.getAllErrors().toString();
         } else {
 
-          Optional<Citizen> citizenNew = citizenService.create(inputFields);
-          if (citizenNew.isPresent()) {
-            return ResponseEntity
-                // .created(linkTo(methodOn(CitizenController.class).newCitizen(null,
-                // null)).toUri())
-                .status(HttpStatus.CREATED)
-                .body(assembler.toModel(citizenNew.get()));
-          } else {
-            errorMessage = "Error persisting citizen";
-          }
+            Optional<Citizen> citizen = citizenService.fetch(iFs);
+            if (citizen.isPresent()) {
+                return ResponseEntity.ok(assembler.toModel(citizen.get()));
+            } else {
+                errorMessage = citizenService.getLastError();
+            }
         }
-      }
+
+        return ResponseEntity
+                .badRequest()
+                .body(formTemplateFactory.getCitizenFormTemplateModel(errorMessage, selfLink));
     }
 
-    return ResponseEntity.badRequest()
-        .body(FormTemplateFactory.buildCitizenFormTemplateModel(
-            errorMessage,
-            linkTo(methodOn(CitizenController.class).create(null, null)).withSelfRel(),
-            null));
-  }
+    /*
+     * create new citizen
+     */
+    @PostMapping
+    public ResponseEntity<?> store(@Valid @ModelAttribute CitizenRequestUpdate iFs,
+            BindingResult bR) {
 
-  /*
-   * updates
-   */
-  @PostMapping("/{id}")
-  public ResponseEntity<?> update(@PathVariable Long id, CitizenRequestUpdate inputFields,
-      BindingResult bindingResult) {
-
-    String errorMessage = "";
-
-    if (bindingResult.hasErrors()) {
-      errorMessage = bindingResult.getAllErrors().toString();
-    } else {
-      // check null
-      if (inputFields.getHashCode() == null) {
-        errorMessage = "HashCode is null";
-      } else {
-        // get citizen
-        Optional<Citizen> citizen = citizenService.findById(id, inputFields.getHashCode());
-        if (citizen.isPresent()) {
-
-          // update block only certain fields
-          var needUpdate = false;
-          Citizen ci = citizen.get();
-
-          if (inputFields.getDeathDay() != null) {
-            ci.getDays().setDeathDay(inputFields.getDeathDay());
-            needUpdate = true;
-          }
-
-          if (inputFields.getCitizenship() != null) {
-            ci.setCitizenship(inputFields.getCitizenship());
-            needUpdate = true;
-          }
-
-          if (inputFields.getFamilyName() != null) {
-            ci.getNames().setFamilyName(inputFields.getFamilyName());
-            needUpdate = true;
-          }
-
-          if (needUpdate) {
-            Citizen updatedCitizen = citizenService.update(ci);
-            return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(assembler.toModel(updatedCitizen));
-          } else {
-            errorMessage = "Nothing update";
-          }
-
+        String errorMessage = "";
+        if (bR.hasErrors()) {
+            errorMessage = bR.getAllErrors().toString();
         } else {
-          errorMessage = String.format("Citizen by id=%s not found", id);
+            Optional<Citizen> citizen = citizenService.store(iFs);
+            if (citizen.isPresent()) {
+                return ResponseEntity
+                        // // .created(linkTo(methodOn(CitizenController.class).newCitizen(null,
+                        // // null)).toUri())
+                        .status(HttpStatus.CREATED)
+                        .body(assembler.toModel(citizen.get()));
+            } else {
+                errorMessage = citizenService.getLastError();
+            }
         }
-      }
+
+        return ResponseEntity.badRequest()
+                .body(formTemplateFactory.getCitizenFormTemplateModel(
+                        errorMessage,
+                        linkTo(methodOn(CitizenController.class).store(null, null)).withSelfRel()));
     }
-
-    return ResponseEntity
-        .badRequest()
-        .body(FormTemplateFactory.buildCitizenUpdateFormTemplateModel(
-            errorMessage,
-            linkTo(methodOn(CitizenController.class).update(id, null, null)).withSelfRel()));
-  }
-
 }
