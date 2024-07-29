@@ -3,7 +3,7 @@ package com.protsdev.citizens;
 // import static org.assertj.core.api.Assertions.assertThat;cc
 import static org.mockito.ArgumentMatchers.endsWith;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+// import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.junit.jupiter.api.Test;
@@ -144,7 +144,7 @@ public class ControllerFamilyTest {
             case "WrongFields":
                 citizenForm.add("firstName", "Gomez");
                 citizenForm.add("familyName", "Addams");
-                citizenForm.add("birthDay", "1970-03-300");
+                citizenForm.add("birthDate", "1970-03-300");
                 citizenForm.add("gender", "MALEg");
                 citizenForm.add("citizenship", "USAv");
                 break;
@@ -152,7 +152,7 @@ public class ControllerFamilyTest {
             case "Gomez":
                 citizenForm.add("firstName", "Gomez");
                 citizenForm.add("familyName", "Addams");
-                citizenForm.add("birthDay", "1970-03-30");
+                citizenForm.add("birthDate", "1970-03-30");
                 citizenForm.add("gender", "MALE");
                 citizenForm.add("citizenship", "USA");
                 break;
@@ -160,7 +160,7 @@ public class ControllerFamilyTest {
             case "Oprah":
                 citizenForm.add("firstName", "Oprah");
                 citizenForm.add("familyName", "Addams");
-                citizenForm.add("birthDay", "2009-05-14");
+                citizenForm.add("birthDate", "2009-05-14");
                 citizenForm.add("gender", "FEMALE");
                 citizenForm.add("citizenship", "USA");
                 break;
@@ -168,7 +168,7 @@ public class ControllerFamilyTest {
             case "Wednesday":
                 citizenForm.add("firstName", "Wednesday");
                 citizenForm.add("familyName", "Addams");
-                citizenForm.add("birthDay", "1995-02-16");
+                citizenForm.add("birthDate", "1995-02-16");
                 citizenForm.add("gender", "FEMALE");
                 citizenForm.add("citizenship", "USA");
                 break;
