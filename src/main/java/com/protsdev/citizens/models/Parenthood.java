@@ -3,13 +3,11 @@ package com.protsdev.citizens.models;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.protsdev.citizens.enums.TypeParenthood;
+import com.protsdev.citizens.enums.ParenthoodType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -20,8 +18,7 @@ import lombok.Setter;
 @Table(name = "CITIZEN_PARENTHOOD")
 @Setter
 @Getter
-public class Parenthood {
-    private @Id @GeneratedValue Long id;
+public class Parenthood extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "citizen_id", referencedColumnName = "id")
@@ -36,13 +33,12 @@ public class Parenthood {
     private DateRights dateRights;
 
     @Column
-    private TypeParenthood type;
+    private ParenthoodType type;
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        // result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((citizen == null) ? 0 : citizen.hashCode());
         result = prime * result + ((child == null) ? 0 : child.hashCode());
         result = prime * result + ((dateRights == null) ? 0 : dateRights.hashCode());
@@ -60,11 +56,6 @@ public class Parenthood {
             return false;
         Parenthood other = (Parenthood) obj;
 
-        // if (id == null) {
-        // if (other.id != null)
-        // return false;
-        // } else if (!id.equals(other.id))
-        // return false;
         if (citizen == null) {
             if (other.citizen != null)
                 return false;

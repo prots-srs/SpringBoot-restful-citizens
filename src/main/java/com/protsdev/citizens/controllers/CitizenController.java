@@ -47,7 +47,7 @@ public class CitizenController {
     // }
 
     @GetMapping
-    public ResponseEntity<?> index(@Valid CitizenRequest iFs,
+    public ResponseEntity<?> index(@Valid @ModelAttribute CitizenRequest iFs,
             BindingResult bR) {
 
         Link selfLink = linkTo(methodOn(CitizenController.class).index(null, null)).withSelfRel();
@@ -72,7 +72,7 @@ public class CitizenController {
     }
 
     /*
-     * create new citizen
+     * create new citizen|update current
      */
     @PostMapping
     public ResponseEntity<?> store(@Valid @ModelAttribute CitizenRequestUpdate iFs,

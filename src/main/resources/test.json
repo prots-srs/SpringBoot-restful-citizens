@@ -1,50 +1,55 @@
 {
   "_embedded": {
     "formTemplate": {
-      "error": "[Field error in object 'marriageRequest' on field 'familyNameA': rejected value []; codes [NotBlank.marriageRequest.familyNameA,NotBlank.familyNameA,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [marriageRequest.familyNameA,familyNameA]; arguments []; default message [familyNameA]]; default message [must not be blank], Field error in object 'marriageRequest' on field 'firstNameB': rejected value []; codes [NotBlank.marriageRequest.firstNameB,NotBlank.firstNameB,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [marriageRequest.firstNameB,firstNameB]; arguments []; default message [firstNameB]]; default message [must not be blank]]",
-      "title": "Input citizens for marriage",
+      "error": "[Field error in object 'parenthoodRequest' on field 'birthDate': rejected value [1970-03-300]; codes [typeMismatch.parenthoodRequest.birthDate,typeMismatch.birthDate,typeMismatch.java.time.LocalDate,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [parenthoodRequest.birthDate,birthDate]; arguments []; default message [birthDate]]; default message [Failed to convert property value of type 'java.lang.String' to required type 'java.time.LocalDate' for property 'birthDate'; Failed to convert from type [java.lang.String] to type [@jakarta.validation.constraints.NotNull java.time.LocalDate] for value [1970-03-300]], Field error in object 'parenthoodRequest' on field 'citizenship': rejected value [null]; codes [NotNull.parenthoodRequest.citizenship,NotNull.citizenship,NotNull.com.protsdev.citizens.enums.Citizenship,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [parenthoodRequest.citizenship,citizenship]; arguments []; default message [citizenship]]; default message [must not be null], Field error in object 'parenthoodRequest' on field 'gender': rejected value [null]; codes [NotNull.parenthoodRequest.gender,NotNull.gender,NotNull.com.protsdev.citizens.enums.Gender,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [parenthoodRequest.gender,gender]; arguments []; default message [gender]]; default message [must not be null], Field error in object 'parenthoodRequest' on field 'parenthoodType': rejected value [null]; codes [NotNull.parenthoodRequest.parenthoodType,NotNull.parenthoodType,NotNull.com.protsdev.citizens.enums.ParenthoodType,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [parenthoodRequest.parenthoodType,parenthoodType]; arguments []; default message [parenthoodType]]; default message [must not be null], Field error in object 'parenthoodRequest' on field 'familyName': rejected value [null]; codes [NotBlank.parenthoodRequest.familyName,NotBlank.familyName,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [parenthoodRequest.familyName,familyName]; arguments []; default message [familyName]]; default message [must not be blank], Field error in object 'parenthoodRequest' on field 'childCitizenship': rejected value [null]; codes [NotNull.parenthoodRequest.childCitizenship,NotNull.childCitizenship,NotNull.com.protsdev.citizens.enums.Citizenship,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [parenthoodRequest.childCitizenship,childCitizenship]; arguments []; default message [childCitizenship]]; default message [must not be null], Field error in object 'parenthoodRequest' on field 'childGender': rejected value [null]; codes [NotNull.parenthoodRequest.childGender,NotNull.childGender,NotNull.com.protsdev.citizens.enums.Gender,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [parenthoodRequest.childGender,childGender]; arguments []; default message [childGender]]; default message [must not be null], Field error in object 'parenthoodRequest' on field 'dateRights': rejected value [null]; codes [NotNull.parenthoodRequest.dateRights,NotNull.dateRights,NotNull.java.time.LocalDate,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [parenthoodRequest.dateRights,dateRights]; arguments []; default message [dateRights]]; default message [must not be null], Field error in object 'parenthoodRequest' on field 'firstName': rejected value [null]; codes [NotBlank.parenthoodRequest.firstName,NotBlank.firstName,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [parenthoodRequest.firstName,firstName]; arguments []; default message [firstName]]; default message [must not be blank], Field error in object 'parenthoodRequest' on field 'childFamilyName': rejected value [null]; codes [NotBlank.parenthoodRequest.childFamilyName,NotBlank.childFamilyName,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [parenthoodRequest.childFamilyName,childFamilyName]; arguments []; default message [childFamilyName]]; default message [must not be blank], Field error in object 'parenthoodRequest' on field 'childFirstName': rejected value [null]; codes [NotBlank.parenthoodRequest.childFirstName,NotBlank.childFirstName,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [parenthoodRequest.childFirstName,childFirstName]; arguments []; default message [childFirstName]]; default message [must not be blank], Field error in object 'parenthoodRequest' on field 'childBirthDate': rejected value [null]; codes [NotNull.parenthoodRequest.childBirthDate,NotNull.childBirthDate,NotNull.java.time.LocalDate,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [parenthoodRequest.childBirthDate,childBirthDate]; arguments []; default message [childBirthDate]]; default message [must not be null]]",
+      "title": "Input citizens for parenthood",
       "contentType": "application/json|multipart/form-data",
       "method": "POST",
       "properties": [
-        { "name": "firstNameA", "type": "text", "required": "true" },
-        { "name": "familyNameA", "type": "text", "required": "true" },
-        { "name": "secondNameA", "type": "text", "required": "false" },
-        { "name": "birthDateA", "type": "text", "required": "true" },
+        { "name": "firstName", "type": "text", "required": "true" },
+        { "name": "familyName", "type": "text", "required": "true" },
+        { "name": "secondName", "type": "text", "required": "false" },
+        { "name": "birthDate", "type": "text", "required": "true" },
         {
-          "name": "genderA",
+          "name": "gender",
           "options": "MALE,FEMALE",
           "type": "select",
           "required": "true"
         },
         {
-          "name": "citizenshipA",
+          "name": "citizenship",
           "options": "USA,UKRAINIAN,CANADA,UK",
           "type": "select",
           "required": "true"
         },
-        { "name": "firstNameB", "type": "text", "required": "true" },
-        { "name": "familyNameB", "type": "text", "required": "true" },
-        { "name": "secondNameB", "type": "text", "required": "false" },
-        { "name": "birthDateB", "type": "text", "required": "true" },
+        { "name": "childFirstName", "type": "text", "required": "true" },
+        { "name": "childFamilyName", "type": "text", "required": "true" },
+        { "name": "childSecondName", "type": "text", "required": "false" },
+        { "name": "childBirthDate", "type": "text", "required": "true" },
         {
-          "name": "genderB",
+          "name": "childGender",
           "options": "MALE,FEMALE",
           "type": "select",
           "required": "true"
         },
         {
-          "name": "citizenshipB",
+          "name": "childCitizenship",
           "options": "USA,UKRAINIAN,CANADA,UK",
           "type": "select",
           "required": "true"
         },
-        { "name": "dateOfEvent", "type": "text", "required": "false" },
-        { "name": "giveBFamilyNameA", "type": "checkbox", "required": "false" }
+        { "name": "dateRights", "type": "text", "required": "true" },
+        {
+          "name": "parenthoodType",
+          "options": "BIRTHFATHER,BIRTHMOTHER,GODFATHER,GODMOTHER,ADOPTER",
+          "type": "select",
+          "required": "true"
+        }
       ]
     }
   },
   "_links": {
-    "self": { "href": "http://localhost/api/marriage/create" },
-    "index": { "href": "http://localhost/api/marriage" }
+    "self": { "href": "http://localhost/api/parenthood/give" },
+    "index": { "href": "http://localhost/api/parenthood" }
   }
 }

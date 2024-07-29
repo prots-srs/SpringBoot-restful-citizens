@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.protsdev.citizens.dto.FormTemplate;
 import com.protsdev.citizens.enums.Citizenship;
 import com.protsdev.citizens.enums.Gender;
+import com.protsdev.citizens.enums.ParenthoodType;
 
 @Service
 public class FormTemplateModel {
@@ -46,6 +47,18 @@ public class FormTemplateModel {
         return HalModelBuilder
                 .emptyHalModel()
                 .embed(getMarriageFormTemplate(errorMessage))
+                .link(self)
+                .link(root)
+                .build();
+    }
+
+    /*
+     * 
+     */
+    public RepresentationModel<?> getParenthoodFormTemplateModel(String errorMessage, Link self, Link root) {
+        return HalModelBuilder
+                .emptyHalModel()
+                .embed(getParenthoodFormTemplate(errorMessage))
                 .link(self)
                 .link(root)
                 .build();
@@ -109,23 +122,52 @@ public class FormTemplateModel {
                 .setMethod(RequestMethod.POST)
                 .setError(errorMessage)
                 .setContentType("application/json|multipart/form-data")
-                // to search citizen A (Husband)
-                .addProperty(getTextField("firstNameA", "text", "true"))
-                .addProperty(getTextField("familyNameA", "text", "true"))
-                .addProperty(getTextField("secondNameA", "text", "false"))
-                .addProperty(getTextField("birthDateA", "text", "true"))
-                .addProperty(getGenderField("genderA"))
-                .addProperty(getCitizenshipField("citizenshipA"))
-                // citizen B (Wife)
-                .addProperty(getTextField("firstNameB", "text", "true"))
-                .addProperty(getTextField("familyNameB", "text", "true"))
-                .addProperty(getTextField("secondNameB", "text", "false"))
-                .addProperty(getTextField("birthDateB", "text", "true"))
-                .addProperty(getGenderField("genderB"))
-                .addProperty(getCitizenshipField("citizenshipB"))
+                // to search citizen (Husband)
+                .addProperty(getTextField("firstName", "text", "true"))
+                .addProperty(getTextField("familyName", "text", "true"))
+                .addProperty(getTextField("secondName", "text", "false"))
+                .addProperty(getTextField("birthDate", "text", "true"))
+                .addProperty(getGenderField(null))
+                .addProperty(getCitizenshipField("citizenship"))
+                // partner (Wife)
+                .addProperty(getTextField("firstNamePartner", "text", "true"))
+                .addProperty(getTextField("familyNamePartner", "text", "true"))
+                .addProperty(getTextField("secondNamePartner", "text", "false"))
+                .addProperty(getTextField("birthDatePartner", "text", "true"))
+                .addProperty(getGenderField("genderPartner"))
+                .addProperty(getCitizenshipField("citizenshipPartner"))
                 // date
                 .addProperty(getTextField("dateOfEvent", "text", "false"))
-                .addProperty(getTextField("giveBFamilyNameA", "checkbox", "false"))
+                .addProperty(getTextField("givePartnerFamilyNameCitizen", "checkbox", "false"))
+                .build();
+    }
+
+    private FormTemplate getParenthoodFormTemplate(String errorMessage) {
+        if (errorMessage == null) {
+            errorMessage = "";
+        }
+
+        return new FormTemplate.Builder("Input citizens for parenthood")
+                .setMethod(RequestMethod.POST)
+                .setError(errorMessage)
+                .setContentType("application/json|multipart/form-data")
+                // to search citizen
+                .addProperty(getTextField("firstName", "text", "true"))
+                .addProperty(getTextField("familyName", "text", "true"))
+                .addProperty(getTextField("secondName", "text", "false"))
+                .addProperty(getTextField("birthDate", "text", "true"))
+                .addProperty(getGenderField(null))
+                .addProperty(getCitizenshipField("citizenship"))
+                // partner (child)
+                .addProperty(getTextField("childFirstName", "text", "true"))
+                .addProperty(getTextField("childFamilyName", "text", "true"))
+                .addProperty(getTextField("childSecondName", "text", "false"))
+                .addProperty(getTextField("childBirthDate", "text", "true"))
+                .addProperty(getGenderField("childGender"))
+                .addProperty(getCitizenshipField("childCitizenship"))
+                // date
+                .addProperty(getTextField("dateRights", "text", "true"))
+                .addProperty(getParenthoodTypeField(null))
                 .build();
     }
 
@@ -152,6 +194,13 @@ public class FormTemplateModel {
         var param = getTextField(fieldName != null ? fieldName : "citizenship", "select", "true");
         var chitizenships = Arrays.stream(Citizenship.values()).map(g -> g.toString()).toList();
         param.put("options", String.join(",", chitizenships));
+        return param;
+    }
+
+    private Map<String, String> getParenthoodTypeField(String fieldName) {
+        var param = getTextField(fieldName != null ? fieldName : "parenthoodType", "select", "true");
+        var parenthoodType = Arrays.stream(ParenthoodType.values()).map(g -> g.toString()).toList();
+        param.put("options", String.join(",", parenthoodType));
         return param;
     }
 

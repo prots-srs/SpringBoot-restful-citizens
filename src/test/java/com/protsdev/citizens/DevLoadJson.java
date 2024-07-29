@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.protsdev.citizens.enums.Gender;
-import com.protsdev.citizens.enums.TypeParenthood;
+import com.protsdev.citizens.enums.ParenthoodType;
 import com.protsdev.citizens.jsons.FullJson;
 import com.protsdev.citizens.services.JsonLoaderService;
 
@@ -40,7 +40,7 @@ public class DevLoadJson {
 
             // parenthood
             assertThat(js.parenthoods().get(1).dateOnRights()).isEqualTo("1995-02-16");
-            assertThat(js.parenthoods().get(1).parenthood()).isEqualTo(TypeParenthood.BIRTHMOTHER);
+            assertThat(js.parenthoods().get(1).parenthood()).isEqualTo(ParenthoodType.BIRTHMOTHER);
         }
     }
 }

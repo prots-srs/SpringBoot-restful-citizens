@@ -1,5 +1,5 @@
 package com.protsdev.citizens.enums;
 
-public enum TypeParenthood {
+public enum ParenthoodType {
     BIRTHFATHER, BIRTHMOTHER, GODFATHER, GODMOTHER, ADOPTER
 }

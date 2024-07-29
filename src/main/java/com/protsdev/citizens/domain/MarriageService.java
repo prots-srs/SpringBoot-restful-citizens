@@ -3,7 +3,7 @@ package com.protsdev.citizens.domain;
 import com.protsdev.citizens.dto.CitizenRequest;
 import com.protsdev.citizens.dto.MarriageRequest;
 import com.protsdev.citizens.enums.Gender;
-import com.protsdev.citizens.enums.TypeParenthood;
+import com.protsdev.citizens.enums.ParenthoodType;
 import com.protsdev.citizens.models.Citizen;
 import com.protsdev.citizens.models.DateRights;
 import com.protsdev.citizens.models.Marriage;
@@ -90,7 +90,7 @@ public class MarriageService {
                 createEntities(partnerA, partnerB, inputFields.getDateOfEvent());
 
                 // processing maiden name
-                if (inputFields.getGiveBFamilyNameA().booleanValue()) {
+                if (inputFields.getGivePartnerFamilyNameCitizen().booleanValue()) {
                     if (partnerA.getGender().equals(Gender.FEMALE)) {
                         citizenService.setMaidenName(partnerA, partnerB.getNames().getFamilyName());
                         partnerA = citizenService.update(partnerA);
@@ -140,26 +140,26 @@ public class MarriageService {
 
     private Map<String, Optional<Citizen>> getCitizens(MarriageRequest inputFields) {
 
-        var citizenA = new CitizenRequest();
-        citizenA.setFirstName(inputFields.getFirstNameA());
-        citizenA.setFamilyName(inputFields.getFamilyNameA());
-        citizenA.setBirthDate(inputFields.getBirthDateA());
-        citizenA.setGender(inputFields.getGenderA());
-        citizenA.setCitizenship(inputFields.getCitizenshipA());
+        var citizen = new CitizenRequest();
+        citizen.setFirstName(inputFields.getFirstName());
+        citizen.setFamilyName(inputFields.getFamilyName());
+        citizen.setBirthDate(inputFields.getBirthDate());
+        citizen.setGender(inputFields.getGender());
+        citizen.setCitizenship(inputFields.getCitizenship());
 
-        var citizenB = new CitizenRequest();
-        citizenB.setFirstName(inputFields.getFirstNameB());
-        citizenB.setFamilyName(inputFields.getFamilyNameB());
-        citizenB.setBirthDate(inputFields.getBirthDateB());
-        citizenB.setGender(inputFields.getGenderB());
-        citizenB.setCitizenship(inputFields.getCitizenshipB());
+        var partner = new CitizenRequest();
+        partner.setFirstName(inputFields.getFirstNamePartner());
+        partner.setFamilyName(inputFields.getFamilyNamePartner());
+        partner.setBirthDate(inputFields.getBirthDatePartner());
+        partner.setGender(inputFields.getGenderPartner());
+        partner.setCitizenship(inputFields.getCitizenshipPartner());
 
-        Optional<Citizen> partnerA = citizenService.fetch(citizenA);
+        Optional<Citizen> partnerA = citizenService.fetch(citizen);
         if (partnerA.isPresent() == false) {
             errorMessages.add(citizenService.getLastError());
         }
 
-        Optional<Citizen> partnerB = citizenService.fetch(citizenB);
+        Optional<Citizen> partnerB = citizenService.fetch(partner);
         if (partnerB.isPresent() == false) {
             errorMessages.add(citizenService.getLastError());
         }
@@ -245,8 +245,8 @@ public class MarriageService {
 
         partnerA.getParenthoods().forEach(pa -> {
             if (pa.getChild().equals(partnerB)
-                    && (pa.getType().equals(TypeParenthood.BIRTHFATHER)
-                            || pa.getType().equals(TypeParenthood.BIRTHMOTHER))) {
+                    && (pa.getType().equals(ParenthoodType.BIRTHFATHER)
+                            || pa.getType().equals(ParenthoodType.BIRTHMOTHER))) {
                 errorMessages.add(String.format(messages.get("error_parenthood_relations"),
                         partnerA.getNames().toString(), partnerB.getNames().toString()));
                 parenthoodStage.set(0, false);
@@ -254,8 +254,8 @@ public class MarriageService {
         });
         partnerB.getParenthoods().forEach(pa -> {
             if (pa.getChild().equals(partnerA)
-                    && (pa.getType().equals(TypeParenthood.BIRTHFATHER)
-                            || pa.getType().equals(TypeParenthood.BIRTHMOTHER))) {
+                    && (pa.getType().equals(ParenthoodType.BIRTHFATHER)
+                            || pa.getType().equals(ParenthoodType.BIRTHMOTHER))) {
                 errorMessages.add(String.format(messages.get("error_parenthood_relations"),
                         partnerA.getNames().toString(), partnerB.getNames().toString()));
                 parenthoodStage.set(0, false);
@@ -272,13 +272,13 @@ public class MarriageService {
         List<Boolean> siblingStage = new LinkedList<>();
         siblingStage.add(true);
 
-        List<Parenthood> parentsAF = parenthoodRepository.findByChildAndType(partnerA, TypeParenthood.BIRTHFATHER);
-        List<Parenthood> parentsAM = parenthoodRepository.findByChildAndType(partnerA, TypeParenthood.BIRTHMOTHER);
+        List<Parenthood> parentsAF = parenthoodRepository.findByChildAndType(partnerA, ParenthoodType.BIRTHFATHER);
+        List<Parenthood> parentsAM = parenthoodRepository.findByChildAndType(partnerA, ParenthoodType.BIRTHMOTHER);
         parentsAF.forEach(pa -> parentsA.add(pa.getCitizen()));
         parentsAM.forEach(pa -> parentsA.add(pa.getCitizen()));
 
-        List<Parenthood> parentsBF = parenthoodRepository.findByChildAndType(partnerB, TypeParenthood.BIRTHFATHER);
-        List<Parenthood> parentsBM = parenthoodRepository.findByChildAndType(partnerB, TypeParenthood.BIRTHMOTHER);
+        List<Parenthood> parentsBF = parenthoodRepository.findByChildAndType(partnerB, ParenthoodType.BIRTHFATHER);
+        List<Parenthood> parentsBM = parenthoodRepository.findByChildAndType(partnerB, ParenthoodType.BIRTHMOTHER);
         parentsBF.forEach(pa -> parentsB.add(pa.getCitizen()));
         parentsBM.forEach(pa -> parentsB.add(pa.getCitizen()));
 

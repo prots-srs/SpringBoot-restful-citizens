@@ -20,6 +20,7 @@ public class RootController {
                 .link(linkTo(methodOn(CitizenController.class).index(null,
                         null)).withRel("citizen"))
                 .link(linkTo(methodOn(MarriageController.class).index()).withRel("marriage"))
+                .link(linkTo(methodOn(ParenthoodControllers.class).index()).withRel("parenthood"))
                 .link(linkTo(methodOn(FamilyController.class).index()).withRel("family"))
                 .build();
 

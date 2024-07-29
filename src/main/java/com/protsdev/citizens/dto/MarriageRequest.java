@@ -15,49 +15,28 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class MarriageRequest {
+public class MarriageRequest extends CitizenRequest {
     @NotBlank
     @Size(max = 64)
-    protected String firstNameA;
+    protected String firstNamePartner;
 
     @NotBlank
     @Size(max = 64)
-    protected String familyNameA;
+    protected String familyNamePartner;
 
     // @NotBlank
     @Size(max = 64)
-    protected String secondNameA;
+    protected String secondNamePartner;
 
     @NotNull
-    protected LocalDate birthDateA;
+    protected LocalDate birthDatePartner;
 
     @NotNull
-    protected Gender genderA;
+    protected Gender genderPartner;
 
     @NotNull
-    protected Citizenship citizenshipA;
-
-    @NotBlank
-    @Size(max = 64)
-    protected String firstNameB;
-
-    @NotBlank
-    @Size(max = 64)
-    protected String familyNameB;
-
-    // @NotBlank
-    @Size(max = 64)
-    protected String secondNameB;
-
-    @NotNull
-    protected LocalDate birthDateB;
-
-    @NotNull
-    protected Gender genderB;
-
-    @NotNull
-    protected Citizenship citizenshipB;
+    protected Citizenship citizenshipPartner;
 
     private LocalDate dateOfEvent = LocalDate.now();
-    private Boolean giveBFamilyNameA = Boolean.valueOf(true);
+    private Boolean givePartnerFamilyNameCitizen = Boolean.valueOf(true);
 }

@@ -19,11 +19,11 @@ Create by:
 
 - [x] citizen by birth
 - [x] marriage by event
-- [ ] parenthood by birth of child or addopting
+- [x] parenthood by birth of child or addopting
 
 Update by:
 
 - [x] citizen avatar
 - [x] citizen by death, change family name, change citizenship
 - [x] dissolution marriage
-- [ ] clear parenthood
+- [x] lost parenthood

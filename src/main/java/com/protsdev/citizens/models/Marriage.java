@@ -18,9 +18,7 @@ import lombok.ToString;
 @Table(name = "CITIZEN_MARRIAGES")
 @Getter
 @Setter
-public class Marriage {
-    private @Id @GeneratedValue Long id;
-
+public class Marriage extends BaseEntity {
     @ManyToOne
     // (fetch = FetchType.LAZY)
     @JoinColumn(name = "citizen_id", referencedColumnName = "id")

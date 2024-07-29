@@ -3,14 +3,12 @@ package com.protsdev.citizens.models;
 import com.protsdev.citizens.enums.Citizenship;
 import com.protsdev.citizens.enums.Gender;
 
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,11 +24,7 @@ import org.hibernate.annotations.FetchMode;
 @Setter
 @Getter
 @ToString
-public class Citizen {
-
-    @Id
-    @GeneratedValue
-    private Long id;
+public class Citizen extends BaseEntity {
 
     @Embedded
     private CitizenName names;

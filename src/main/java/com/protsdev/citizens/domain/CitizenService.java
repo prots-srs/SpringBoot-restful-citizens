@@ -55,6 +55,7 @@ public class CitizenService {
     }
 
     /**
+     * facade
      * obtain citizen.
      * error in lastError
      * wrong find
@@ -87,6 +88,9 @@ public class CitizenService {
         return citizen;
     }
 
+    /*
+     * facade
+     */
     public Optional<Citizen> fetch(CitizenRequest iFs) {
         lastError = "";
         Optional<Citizen> citizen = Optional.empty();
@@ -115,7 +119,10 @@ public class CitizenService {
     }
 
     /**
+     * facade
      * store citizen
+     * update if present
+     * create if missing
      */
     public Optional<Citizen> store(CitizenRequestUpdate iFs) {
 
@@ -138,7 +145,7 @@ public class CitizenService {
             }
 
             if (iFs.getNewFamilyName() != null) {
-                ci.getNames().setFamilyName(iFs.getNewFamilyName());
+                ci.getNames().setFamilyName(iFs.getNewFamilyName().trim());
                 needUpdate = true;
             }
 
@@ -157,7 +164,8 @@ public class CitizenService {
         } else {
             // create
             Citizen citizenEntity = new Citizen();
-            citizenEntity.setNames(getNames(iFs.getFirstName(), iFs.getFamilyName(), iFs.getSecondName()));
+            citizenEntity.setNames(
+                    getNames(iFs.getFirstName(), iFs.getFamilyName(), iFs.getSecondName()));
             citizenEntity.setDays(getLifeDays(iFs.getBirthDate()));
             citizenEntity.setGender(iFs.getGender());
             citizenEntity.setCitizenship(iFs.getCitizenship());
@@ -189,7 +197,7 @@ public class CitizenService {
         if (citizen.getNames().getMaidenName().isEmpty()) {
             citizen.getNames().setMaidenName(citizen.getNames().getFamilyName());
         }
-        citizen.getNames().setFamilyName(newFamilyName);
+        citizen.getNames().setFamilyName(newFamilyName.trim());
     }
 
     /**
@@ -201,11 +209,11 @@ public class CitizenService {
 
     private CitizenName getNames(String fN, String faN, String sN) {
         CitizenName names = new CitizenName();
-        names.setFirstName(fN);
-        names.setFamilyName(faN);
+        names.setFirstName(fN.trim());
+        names.setFamilyName(faN.trim());
         names.setMaidenName("");
         if (sN != null) {
-            names.setSecondName(sN);
+            names.setSecondName(sN.trim());
         } else {
             names.setSecondName("");
         }
