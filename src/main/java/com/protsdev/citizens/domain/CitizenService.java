@@ -2,8 +2,6 @@ package com.protsdev.citizens.domain;
 
 import com.protsdev.citizens.dto.CitizenRequest;
 import com.protsdev.citizens.dto.CitizenRequestUpdate;
-import com.protsdev.citizens.enums.Citizenship;
-import com.protsdev.citizens.enums.Gender;
 import com.protsdev.citizens.models.Citizen;
 import com.protsdev.citizens.models.CitizenName;
 import com.protsdev.citizens.models.LifeStageDays;

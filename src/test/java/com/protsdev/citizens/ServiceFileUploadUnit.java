@@ -14,9 +14,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.protsdev.citizens.storage.StorageFileNotFoundException;
 import com.protsdev.citizens.storage.StorageProperties;
 import com.protsdev.citizens.storage.StorageService;
-import java.nio.file.Paths;
-import java.util.stream.Stream;
-
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -70,7 +67,6 @@ public class ServiceFileUploadUnit {
     // // "http://localhost/files/second.txt")));
     // }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void should404WhenMissingFile() throws Exception {
         given(storageService.loadAsResource("test.txt"))

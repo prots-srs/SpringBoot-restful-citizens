@@ -45,7 +45,8 @@ public class ServiceMarriageUnit {
         marriageRequest.setDateOfEvent(LocalDate.parse("2015-06-24"));
 
         Optional<Marriage> marriageOp = marriageService.create(marriageRequest);
-        System.out.println("-->> error: " + marriageService.getErrorMessages());
+        System.out.println("-->> error wrong_create_where_partner_is_child_another_not_born: "
+                + marriageService.getErrorMessages());
 
         assertThat(marriageOp.isPresent()).isFalse();
     }
@@ -60,15 +61,16 @@ public class ServiceMarriageUnit {
         marriageRequest.setGender(Gender.MALE);
         marriageRequest.setCitizenship(Citizenship.USA);
 
-        marriageRequest.setFirstNamePartner("Emma");
-        marriageRequest.setFamilyNamePartner("Watson");
-        marriageRequest.setBirthDatePartner(LocalDate.parse("1990-04-15"));
+        marriageRequest.setFirstNamePartner("Pamela");
+        marriageRequest.setFamilyNamePartner("DiCaprio");
+        marriageRequest.setBirthDatePartner(LocalDate.parse("1967-07-01"));
         marriageRequest.setGenderPartner(Gender.FEMALE);
-        marriageRequest.setCitizenshipPartner(Citizenship.UK);
+        marriageRequest.setCitizenshipPartner(Citizenship.CANADA);
         marriageRequest.setDateOfEvent(LocalDate.parse("2024-06-24"));
 
         Optional<Marriage> marriageOp = marriageService.create(marriageRequest);
-        System.out.println("-->> error: " + marriageService.getErrorMessages());
+        System.out.println(
+                "-->> error wrong_create_where_partner_has_active_marriage: " + marriageService.getErrorMessages());
 
         assertThat(marriageOp.isPresent()).isFalse();
     }
@@ -90,7 +92,8 @@ public class ServiceMarriageUnit {
         marriageRequest.setCitizenshipPartner(Citizenship.UK);
 
         Optional<Marriage> marriageOp = marriageService.create(marriageRequest);
-        System.out.println("-->> error: " + marriageService.getErrorMessages());
+        System.out.println("-->> error wrong_create_where_partners_have_nuclearfamily_relations: "
+                + marriageService.getErrorMessages());
 
         assertThat(marriageOp.isPresent()).isFalse();
     }
@@ -112,7 +115,8 @@ public class ServiceMarriageUnit {
         marriageRequest.setCitizenshipPartner(Citizenship.UK);
 
         Optional<Marriage> marriageOp = marriageService.create(marriageRequest);
-        System.out.println("-->> error: " + marriageService.getErrorMessages());
+        System.out.println("-->> error wrong_create_where_partners_have_nuclearfamily_relations_sibling: "
+                + marriageService.getErrorMessages());
 
         assertThat(marriageOp.isPresent()).isFalse();
     }
@@ -161,7 +165,7 @@ public class ServiceMarriageUnit {
         assertThat(marriageOp.isPresent()).isTrue();
         assertThat(marriageService.getErrorMessages().replaceAll("[\\[\\]]", "")).isEmpty();
 
-        System.out.println("-->> marriage: " + marriageService.getErrorMessages());
+        System.out.println("-->> error dissolution_active_marriage: " + marriageService.getErrorMessages());
         System.out.println("-->> marriage: " + marriageOp.get().toString());
     }
 
