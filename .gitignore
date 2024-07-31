@@ -33,5 +33,5 @@ build/
 .vscode/
 
 test.json
-uploads/
-.env
+/uploads
+/config
