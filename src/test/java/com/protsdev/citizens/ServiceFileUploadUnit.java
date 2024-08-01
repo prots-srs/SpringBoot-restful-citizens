@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.protsdev.citizens.storage.StorageFileNotFoundException;
@@ -49,7 +50,7 @@ public class ServiceFileUploadUnit {
                 "Hello, World!".getBytes());
 
         mockMvc.perform(multipart("/api/files").file(multipartFile))
-                // .andDo(print())
+                .andDo(print())
                 .andExpect(status().isFound())
                 .andExpect(header().string("Location", "/api/files"));
 
