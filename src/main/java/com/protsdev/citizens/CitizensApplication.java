@@ -14,23 +14,7 @@ import com.protsdev.citizens.storage.StorageService;
 public class CitizensApplication {
 
     public static void main(String[] args) {
-        // SpringApplication.run(CitizensApplication.class, args);
-        // or
-        SpringApplication application = new SpringApplication(CitizensApplication.class);
-
-        boolean setProfile = false;
-        for (int s = 0; s < args.length; s++) {
-            if (args[s].equals("dev") && !setProfile) {
-                application.setAdditionalProfiles("h2");
-                setProfile = true;
-            }
-        }
-
-        if (!setProfile) {
-            application.setAdditionalProfiles("postgres");
-        }
-        // application.setBannerMode(Banner.Mode.OFF);
-        application.run(args);
+        SpringApplication.run(CitizensApplication.class, args);
     }
 
     @Bean

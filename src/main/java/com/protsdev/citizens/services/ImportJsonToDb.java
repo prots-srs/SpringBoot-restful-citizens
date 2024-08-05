@@ -23,7 +23,6 @@ import com.protsdev.citizens.repositories.MarriageRepository;
 import com.protsdev.citizens.repositories.ParenthoodRepository;
 
 @Service
-@Profile("h2")
 public class ImportJsonToDb {
     private JsonLoaderService jsonLoader;
     private CitizenRepository citizenRepository;

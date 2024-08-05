@@ -24,7 +24,6 @@ import com.protsdev.citizens.jsons.FullJson;
  */
 
 @Service
-@Profile("h2")
 public class JsonLoaderService {
 
     private static final Logger log = LoggerFactory.getLogger(JsonLoaderService.class);

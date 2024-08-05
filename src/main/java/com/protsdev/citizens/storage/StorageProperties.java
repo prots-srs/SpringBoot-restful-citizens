@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
 @Getter
-// @Configuration
 @ConfigurationProperties("storage")
 public class StorageProperties {
     @NotBlank

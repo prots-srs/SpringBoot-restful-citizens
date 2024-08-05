@@ -32,9 +32,11 @@ build/
 ### VS Code ###
 .vscode/
 
+.env
 test.json
 /uploads
 /config
 Dockerfile
 compose.yaml
 docker-compose.yaml
+.dockerignore
