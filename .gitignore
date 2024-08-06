@@ -35,8 +35,3 @@ build/
 .env
 test.json
 /uploads
-/config
-Dockerfile
-compose.yaml
-docker-compose.yaml
-.dockerignore

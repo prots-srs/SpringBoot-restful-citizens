@@ -1,0 +1,61 @@
+# https://docs.docker.com/go/compose-spec-reference/
+services:
+  server:
+    container_name: backend-citizens
+    build:
+      context: .
+      # target: development
+    ports:
+      - 8080:8080
+      - 9001:9001
+      # - 8000:8000
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - POSTGRES_URL=jdbc:postgresql://db:5432/${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PW=${POSTGRES_PW}
+    networks:
+      - spring-citizens
+    volumes:
+      - uploads-data:/uploads
+    # develop:
+    # watch:
+    # - action: rebuild
+    # path: .
+  db:
+    container_name: postgres-db-citizens
+    image: postgres:latest
+    restart: always
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PW}
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d ${POSTGRES_DB} -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - spring-citizens
+  # pgadmin:
+  #   container_name: pgadmin-citizens
+  #   image: dpage/pgadmin4:latest
+  #   restart: always
+  #   environment:
+  #     - PGADMIN_DEFAULT_EMAIL=${PGADMIN_MAIL}
+  #     - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PW}
+  #   ports:
+  #     - "5050:80"
+  #   networks:
+  #     - spring-citizens
+volumes:
+  db-data:
+  uploads-data:
+networks:
+  spring-citizens:
